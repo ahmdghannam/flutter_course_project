@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_course_project/GeneratedTableDisplay.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -53,31 +54,35 @@ class _TableCreatorPageState extends State<TableCreatorPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        VerticalSpacing(48),
-        hoursIntervalSection(),
-        VerticalSpacing(24),
-        startEndSection(),
-        VerticalSpacing(60),
-        CustomButton(),
-        VerticalSpacing(16),
-        const Text("The hours should be between 12 -19 "),
-        VerticalSpacing(12),
-        const Text("The day time should be between 8:30 and 4:00"),
-      ],
+    return SingleChildScrollView(
+      child: Column(
+        children: [
+          VerticalSpacing(48),
+          hoursIntervalSection(),
+          VerticalSpacing(24),
+          startEndSection(),
+          VerticalSpacing(60),
+          CustomButton(),
+          VerticalSpacing(16),
+          const Text("The hours should be between 12 -19 "),
+          VerticalSpacing(12),
+          const Text("The day time should be between 8:30 and 4:00"),
+        ],
+      ),
     );
   }
 
   ElevatedButton CustomButton() {
     return ElevatedButton(
-          onPressed: () {},
-          child: Text(
-            "Generate",
-            style: TextStyle(color: Colors.white),
-          ),
-          style: ElevatedButton.styleFrom(
-              backgroundColor: Color(0xFF842700), minimumSize: Size(300, 60)));
+        onPressed: () {
+          navigateToDisplayTable();
+        },
+        child: Text(
+          "Generate",
+          style: TextStyle(color: Colors.white),
+        ),
+        style: ElevatedButton.styleFrom(
+            backgroundColor: Color(0xFF842700), minimumSize: Size(300, 60)));
   }
 
   Container VerticalSpacing(double value) => Container(height: value);
@@ -185,5 +190,10 @@ class _TableCreatorPageState extends State<TableCreatorPage> {
           color: Color(0xFFEEEDED),
           borderRadius: BorderRadius.all(Radius.circular(31))),
     );
+  }
+
+  void navigateToDisplayTable() {
+    Navigator.push(context,
+        MaterialPageRoute(builder: (context) => const GeneratedTableDisplay()));
   }
 }
