@@ -36,7 +36,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => TableCreatorPage()),
+                  MaterialPageRoute(builder: (context) => const TableCreatorPage()),
                 );
               },
               child: Text('Create New Table'),

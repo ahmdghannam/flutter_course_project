@@ -2,19 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_course_project/GeneratedTableDisplay.dart';
 
 void main() {
-  runApp(MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          title: const Text(
-            "Table Creator",
-            style: TextStyle(fontSize: 16),
-          ),
-          backgroundColor: Colors.white,
-        ),
-        body: const TableCreatorPage(),
-      )));
+  runApp(TableCreatorPage());
 }
 
 class TableCreatorPage extends StatefulWidget {
@@ -54,22 +42,34 @@ class _TableCreatorPageState extends State<TableCreatorPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          VerticalSpacing(48),
-          hoursIntervalSection(),
-          VerticalSpacing(24),
-          startEndSection(),
-          VerticalSpacing(60),
-          CustomButton(),
-          VerticalSpacing(16),
-          const Text("The hours should be between 12 -19 "),
-          VerticalSpacing(12),
-          const Text("The day time should be between 8:30 and 4:00"),
-        ],
-      ),
-    );
+    return MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: Scaffold(
+          backgroundColor: Colors.white,
+          appBar: AppBar(
+            title: const Text(
+              "Table Creator",
+              style: TextStyle(fontSize: 16),
+            ),
+            backgroundColor: Colors.white,
+          ),
+          body: SingleChildScrollView(
+            child: Column(
+              children: [
+                VerticalSpacing(48),
+                hoursIntervalSection(),
+                VerticalSpacing(24),
+                startEndSection(),
+                VerticalSpacing(60),
+                CustomButton(),
+                VerticalSpacing(16),
+                const Text("The hours should be between 12 -19 "),
+                VerticalSpacing(12),
+                const Text("The day time should be between 8:30 and 4:00"),
+              ],
+            ),
+          ),
+        ));
   }
 
   ElevatedButton CustomButton() {
@@ -90,7 +90,7 @@ class _TableCreatorPageState extends State<TableCreatorPage> {
   Container startEndSection() {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Color(0x1E000000)),
+          border: Border.all(color: Color(0x0f000000)),
           borderRadius: BorderRadius.all(Radius.circular(21))),
       height: 108,
       width: 300,
@@ -133,7 +133,7 @@ class _TableCreatorPageState extends State<TableCreatorPage> {
   Container hoursIntervalSection() {
     return Container(
       decoration: BoxDecoration(
-          border: Border.all(color: Color(0x1E000000)),
+          border: Border.all(color: Color(0x0f000000)),
           borderRadius: BorderRadius.all(Radius.circular(21))),
       height: 108,
       width: 300,
