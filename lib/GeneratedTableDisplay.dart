@@ -3,6 +3,10 @@ import 'package:flutter/services.dart';
 
 import 'Course.dart';
 
+void main() {
+  runApp(GeneratedTableDisplay());
+}
+
 class GeneratedTableDisplay extends StatefulWidget {
   const GeneratedTableDisplay({super.key});
 
@@ -11,7 +15,7 @@ class GeneratedTableDisplay extends StatefulWidget {
 }
 
 class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
-  List<Course> courses = testCourses();
+  List<Course> courses =  testCourses();
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +38,8 @@ class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
 
   @override
   void dispose() {
-    SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    SystemChrome.setPreferredOrientations(
+        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
     super.dispose();
   }
 
