@@ -1,4 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_course_project/TableCreatorPage.dart';
+import 'StartingPage.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+_launchURLInBrowser(String url) async {
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    print('Could not launch $url');
+  }
+}
 
 class HomePage extends StatelessWidget {
   @override
@@ -25,7 +36,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Page1()),
+                  MaterialPageRoute(builder: (context) => const TableCreatorPage()),
                 );
               },
               child: Text('Create New Table'),
@@ -42,7 +53,10 @@ class HomePage extends StatelessWidget {
             SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
-                // Add functionality for updating passed courses
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => StartingPage()),
+                );// Add functionality for updating passed courses
               },
               child: Text('Update Passed Courses'),
               style: ElevatedButton.styleFrom(
@@ -58,7 +72,7 @@ class HomePage extends StatelessWidget {
             SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
-                // launch('https://your-cse-plan-link.com');
+                _launchURLInBrowser('https://www.aaup.edu/Academics/Undergraduate-Studies/Faculty-Engineering/Computer-Systems-Engineering-Department/Computer-Systems-Engineering/Curriculum');
               },
               child: Text('Go to CSE Plan'),
               style: ElevatedButton.styleFrom(

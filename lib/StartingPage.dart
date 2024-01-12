@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'HomePage.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(StartingPage());
 }
 
 class YearData {
@@ -13,7 +13,7 @@ class YearData {
   YearData({required this.title, required this.items});
 }
 
-class MyApp extends StatelessWidget {
+class StartingPage extends StatelessWidget {
   final List<YearData> yearDataList = [
     YearData(title: 'First Year', items: [
       'BEGINNING ENGLISH',
