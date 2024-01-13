@@ -31,6 +31,11 @@ dependencies:
   flutter:
     sdk: flutter
   url_launcher: ^6.2.3
+  excel: ^2.0.4
+  file_picker: ^4.6.1
+  csv: ^5.1.1
+  path_provider: ^2.0.10
+  open_file: ^3.2.1
 
 
   # The following adds the Cupertino Icons font to your application.
