@@ -152,7 +152,7 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[200],
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text('Select your passed courses'),
       ),
@@ -166,25 +166,33 @@ class _MyHomePageState extends State<MyHomePage> {
                 itemBuilder: (context, yearIndex) {
                   YearData yearData = widget.yearDataList[yearIndex];
                   return Container(
-                    margin: EdgeInsets.only(bottom: 16.0),
-                    decoration: BoxDecoration(
-                      color: Color.fromARGB(255, 224, 188, 188),
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                    ),
+                    // Spaced between the years
+                    margin: EdgeInsets.all(10),
                     child: ExpansionTile(
-                      title: Text(
-                        yearData.title,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black,
+                      // add ExpansionTile colors and props.
+                      backgroundColor: Color(0xFFEEEDED),
+                      collapsedBackgroundColor: Color(0xFFEEEDED),
+                      shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      collapsedShape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.all(Radius.circular(20))),
+                      title: Padding(
+                        padding: EdgeInsets.only(left: 15.0),
+                        child: Text(
+                          yearData.title,
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
                         ),
                       ),
-                      tilePadding: EdgeInsets.all(10),
+                      tilePadding: EdgeInsets.all(5),
                       childrenPadding: EdgeInsets.all(16.0),
                       expandedCrossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          // make 'Select All' and 'Clear All' buttons in the middle
+                          mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             TextButton(
                               onPressed: () {
@@ -197,6 +205,10 @@ class _MyHomePageState extends State<MyHomePage> {
                                 'Select All',
                                 style: TextStyle(color: Colors.black),
                               ),
+                            ),
+                            Text(
+                              ' : ',
+                              style: TextStyle(color: Colors.black),
                             ),
                             TextButton(
                               onPressed: () {
@@ -287,8 +299,8 @@ class _MyHomePageState extends State<MyHomePage> {
       YearData yearData = widget.yearDataList[yearIndex];
       print('Year ${yearData.title} status:');
       for (int itemIndex = 0;
-      itemIndex < isSelectedList[yearIndex].length;
-      itemIndex++) {
+        itemIndex < isSelectedList[yearIndex].length;
+        itemIndex++) {
         String item = yearData.items[itemIndex];
         bool isSelected = isSelectedList[yearIndex][itemIndex];
         print('$item: ${isSelected ? 'Selected' : 'Not Selected'}');
