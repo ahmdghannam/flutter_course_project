@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-
 import 'HomePage.dart';
-
-void main() {
-  runApp(StartingPage());
-}
 
 class YearData {
   final String title;
