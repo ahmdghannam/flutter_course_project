@@ -28,7 +28,7 @@ class _AppState extends State<App> {
           children: [
             ElevatedButton(
               onPressed: () async {
-                List<Course> loadedCourses = await _loadCSV( "assets/Courses.csv");
+                List<Course> loadedCourses = await _loadCSV( "assets/courses.csv");
                 setState(() {
                   courses = loadedCourses;
                 });
@@ -42,23 +42,26 @@ class _AppState extends State<App> {
     );
   }
 
-  Column buildListView() {
+  Widget buildListView() {
     if (courses.isEmpty) {
       return Column(
         children: [Text('No data found!!')],
       );
     }
 
-    return Column(
-      children: courses
-          .map(
-            (e) => ListTile(
-          title: Text(
-            "${e.name} ${e.activity} ${e.hours} ${e.instructor} ${e.sectionNumber} ${e.time}",
+    return ListView(
+      children:[ Column(
+        children: courses
+            .map(
+              (e) => ListTile(
+            title: Text(
+              "${e.name}",
+            ),
           ),
-        ),
-      )
-          .toList(),
+        )
+            .toList(),
+      ),],
+        shrinkWrap: true
     );
   }
 }
@@ -72,10 +75,11 @@ class _AppState extends State<App> {
      filePath,
     );
     _data = const CsvToListConverter().convert(result, eol: "\n");
+    print(_data[0]);
     _data.removeAt(0);
     for (var d in _data) {
-      courses.add(Course(d[0].toString(), d[1].toString(), d[2].toString(),
-          d[3].toString(), d[4].toString(), d[5].toString()));
+      courses.add(Course(d[2].toString(), d[8].toString(), d[7].toString(),
+          d[11].toString(), d[3].toString()));
     }
     return courses;
   }

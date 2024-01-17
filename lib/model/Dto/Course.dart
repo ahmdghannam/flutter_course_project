@@ -4,8 +4,7 @@ class Course {
   String activity;
   String time;
   String hours;
-  String instructor;
 
   Course(this.name, this.sectionNumber, this.activity, this.time,
-      this.hours, this.instructor);
+      this.hours);
 }
