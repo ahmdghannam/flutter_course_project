@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'Course.dart';
+import '../model/Dto/Course.dart';
 
 void main() {
   runApp(GeneratedTableDisplay());

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_course_project/TableCreatorPage.dart';
+import 'package:flutter_course_project/view/TableCreatorPage.dart';
 import 'StartingPage.dart';
 import 'package:url_launcher/url_launcher.dart';
 

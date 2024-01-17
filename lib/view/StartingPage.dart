@@ -130,7 +130,7 @@ class _MyHomePageState extends State<MyHomePage> {
   void initializeSelectedList() {
     isSelectedList = List.generate(
         widget.yearDataList.length,
-            (yearIndex) =>
+        (yearIndex) =>
             List.filled(widget.yearDataList[yearIndex].items.length, false));
   }
 
@@ -223,7 +223,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           gridDelegate:
-                          SliverGridDelegateWithFixedCrossAxisCount(
+                              SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 4,
                             crossAxisSpacing: 8.0,
                             mainAxisSpacing: 8.0,
@@ -234,7 +234,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               onTap: () {
                                 setState(() {
                                   isSelectedList[yearIndex][index] =
-                                  !isSelectedList[yearIndex][index];
+                                      !isSelectedList[yearIndex][index];
                                 });
                               },
                               child: Container(
@@ -294,8 +294,8 @@ class _MyHomePageState extends State<MyHomePage> {
       YearData yearData = widget.yearDataList[yearIndex];
       print('Year ${yearData.title} status:');
       for (int itemIndex = 0;
-        itemIndex < isSelectedList[yearIndex].length;
-        itemIndex++) {
+          itemIndex < isSelectedList[yearIndex].length;
+          itemIndex++) {
         String item = yearData.items[itemIndex];
         bool isSelected = isSelectedList[yearIndex][itemIndex];
         print('$item: ${isSelected ? 'Selected' : 'Not Selected'}');

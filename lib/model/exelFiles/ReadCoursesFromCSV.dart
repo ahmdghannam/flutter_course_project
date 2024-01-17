@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:csv/csv.dart';
 import 'package:flutter/services.dart';
-import 'Course.dart';
+import '../Dto/Course.dart';
 ////////////////////
 // Testing
 void main() => runApp(App());

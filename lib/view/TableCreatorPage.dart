@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_course_project/GeneratedTableDisplay.dart';
+import 'package:flutter_course_project/view/GeneratedTableDisplay.dart';
 
 void main() {
   runApp(TableCreatorPage());
