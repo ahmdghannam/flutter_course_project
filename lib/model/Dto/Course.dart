@@ -1,11 +1,16 @@
 class Course {
+  String code;
   String name;
   String sectionNumber;
   String activity;
   String time;
   String hours;
-  String instructor;
 
-  Course(this.name, this.sectionNumber, this.activity, this.time,
-      this.hours, this.instructor);
+  Course(this.code,this.name, this.sectionNumber, this.activity, this.time,
+      this.hours);
+
+  @override
+  String toString() {
+    return 'Course{code: $code, name: $name, sectionNumber: $sectionNumber, activity: $activity, time: $time, hours: $hours} ============\n\n';
+  }
 }
