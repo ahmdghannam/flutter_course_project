@@ -3,6 +3,7 @@ import 'package:flutter_course_project/view/TableCreatorPage.dart';
 import 'StartingPage.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+
 _launchURLInBrowser(String url) async {
   if (await canLaunch(url)) {
     await launch(url);
@@ -22,8 +23,8 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/omarlogo.png', height: 250,),
-            SizedBox(height: 16),
+        Image.asset('assets/omarlogo.png', height: 100,width: double.infinity,fit: BoxFit.fill,),
+            // Container(height: 16),
             Container(
               padding: EdgeInsets.all(25.0),
               child: Text(
@@ -31,7 +32,7 @@ class HomePage extends StatelessWidget {
                 textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(height: 16),
+            Container(height: 4),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
