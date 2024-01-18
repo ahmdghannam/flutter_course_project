@@ -105,6 +105,7 @@ class StartingPage extends StatelessWidget {
         ),
       ),
       home: MyHomePage(yearDataList: yearDataList),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -281,6 +282,11 @@ class _MyHomePageState extends State<MyHomePage> {
               onPressed: () {
                 submitStatus();
               },
+              style: ElevatedButton.styleFrom(
+                fixedSize: const Size(250, 60),
+                backgroundColor: const Color(0xFF842700),
+                foregroundColor: Colors.white,
+              ),
               child: Text('Submit'),
             ),
           ],
