@@ -47,9 +47,20 @@ class _TableCreatorPageState extends State<TableCreatorPage> {
         home: Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
-            title: const Text(
-              "Table Creator",
-              style: TextStyle(fontSize: 16),
+            title: Row(
+              children: [
+                GestureDetector(
+                  child: Icon(Icons.arrow_back),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+                Container(width: 8),
+                const Text(
+                  "Table Creator",
+                  style: TextStyle(fontSize: 16),
+                ),
+              ],
             ),
             backgroundColor: Colors.white,
           ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_course_project/view/StartingPage.dart';
 
 class SignUpPage extends StatelessWidget {
   final TextEditingController nameController = TextEditingController();
@@ -23,7 +24,7 @@ class SignUpPage extends StatelessWidget {
             Column(
               children: [
                 const Image(
-                  image: AssetImage("assets/logo.png"),
+                  image: AssetImage("assets/omarlogo.png"),
                   height: 250,
                 ),
                 RoundedTextField(
@@ -85,7 +86,7 @@ class SignUpPage extends StatelessWidget {
 
       // User registered successfully
       print("Registration Successful");
-
+      goToStartingPage(context);
       // Add navigation logic to the next screen after successful registration
       // Example: Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => NextScreen()));
     } catch (e) {
@@ -97,6 +98,13 @@ class SignUpPage extends StatelessWidget {
         duration: Duration(seconds: 3),
       ));
     }
+  }
+
+  void goToStartingPage(BuildContext context) {
+    Navigator.pop(context);
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) =>
+            StartingPage()));
   }
 }
 
@@ -140,7 +148,7 @@ class RoundedTextField extends StatelessWidget {
 }
 
 
-// past code
+//// past code
 // class SignUpPage extends StatelessWidget {
 //   @override
 //   Widget build(BuildContext context) {
