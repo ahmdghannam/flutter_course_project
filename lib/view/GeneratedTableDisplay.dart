@@ -125,6 +125,7 @@ class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
               Navigator.pop(context);
             },
           ),
+
           const Text(
             "Suggested Schedule",
             style: TextStyle(fontSize: 16),

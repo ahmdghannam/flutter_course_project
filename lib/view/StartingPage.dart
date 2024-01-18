@@ -110,6 +110,7 @@ class _StartingPageState extends State<StartingPage> {
   ];
   // final List<YearData> yearDataList
 
+  // here is the error of loading CSV function ****
   Future<void> _loadCourses() async {
      try {
        // List<Course> loadedCourses = await _loadCSV();
@@ -117,6 +118,7 @@ class _StartingPageState extends State<StartingPage> {
        print("Error loading courses: $error");
      }
    }
+
 
   @override
   void initState() {
@@ -258,6 +260,11 @@ class _StartingPageState extends State<StartingPage> {
               onPressed: () {
                 submitStatus(context); // Pass context to the function
               },
+              style: ElevatedButton.styleFrom(
+                fixedSize: const Size(250, 60),
+                backgroundColor: const Color(0xFF842700),
+                foregroundColor: Colors.white,
+              ),
               child: Text('Submit'),
             ),
           ],
