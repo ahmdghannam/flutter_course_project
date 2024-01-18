@@ -1,5 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'HomePage.dart';
+import 'package:flutter_course_project/model/exelFiles/ReadCoursesFromCSV.dart';
+import 'package:flutter/services.dart';
 
 class YearData {
   final String title;
@@ -8,7 +11,32 @@ class YearData {
   YearData({required this.title, required this.items});
 }
 
-class StartingPage extends StatelessWidget {
+
+String capitalizeFirstLetterOfEachWord(String text) {
+  List<String> words = text.toLowerCase().split(' ');
+  for (int i = 0; i < words.length; i++) {
+    if ( words[i] == 'II' || words[i] == 'III') {
+      words[i] = words[i].toUpperCase();
+    }
+    else {
+      words[i] = words[i][0].toUpperCase() + words[i].substring(1);
+    }
+  }
+  return words.join(' ');
+}
+
+class StartingPage extends StatefulWidget {
+  final String studentId;
+
+  StartingPage({required this.studentId});
+
+  @override
+  _StartingPageState createState() => _StartingPageState();
+}
+
+class _StartingPageState extends State<StartingPage> {
+  List<List<bool>> isSelectedList = [];
+
   final List<YearData> yearDataList = [
     YearData(title: 'First Year', items: [
       'BEGINNING ENGLISH',
@@ -29,7 +57,6 @@ class StartingPage extends StatelessWidget {
       'PROGRAMMING FUNDAMENTALS II'
     ]),
     YearData(title: 'Second Year', items: [
-      'Univ. Elec.',
       'ENGINEERING MATHEMATICS I',
       'ENGINEERING WORKSHOP I',
       'DISCRETE MATHEMATICS',
@@ -65,15 +92,11 @@ class StartingPage extends StatelessWidget {
       'TECHNICAL WRITING',
       'SOFTWARE ENGINEERING',
       'WEB PROGRAMMING',
-      'Spec. Elec.',
       'FUNDAMENTALS OF RESEARCH METHODS',
-      'Univ. Elec.',
       'COMPUTER NETWORK LAB',
       'ARTIFICIAL INTELLIGENCE',
       'MICROPROCESSOR LAB',
       'EMBEDDED SYSTEMS',
-      'Spec. Elec.',
-      'SUMMER SEMESTER',
       'INTERNSHIP'
     ]),
     YearData(title: 'Fifth Year', items: [
@@ -82,44 +105,18 @@ class StartingPage extends StatelessWidget {
       'SENIOR PROJECT I',
       'EMBEDDED SYSTEMS LAB',
       'LINUX LAB',
-      'Spec. Elec.',
-      'Free Elective',
-      'Univ. Elec.',
-      'Univ. Elec.',
       'SENIOR PROJECT II',
-      'Spec. Elec.',
-      'Free Elective'
     ]),
   ];
+  // final List<YearData> yearDataList
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-        appBarTheme: const AppBarTheme(
-          elevation: 0,
-        ),
-        dividerTheme: DividerThemeData(
-          thickness: 0.0,
-        ),
-      ),
-      home: MyHomePage(yearDataList: yearDataList),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  final List<YearData> yearDataList;
-
-  MyHomePage({required this.yearDataList});
-
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  List<List<bool>> isSelectedList = [];
+  Future<void> _loadCourses() async {
+     try {
+       // List<Course> loadedCourses = await _loadCSV();
+     } catch (error) {
+       print("Error loading courses: $error");
+     }
+   }
 
   @override
   void initState() {
@@ -129,19 +126,9 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void initializeSelectedList() {
     isSelectedList = List.generate(
-        widget.yearDataList.length,
-        (yearIndex) =>
-            List.filled(widget.yearDataList[yearIndex].items.length, false));
-  }
-
-  String capitalizeFirstLetterOfEachWord(String text) {
-    List<String> words = text.toLowerCase().split(' ');
-
-    for (int i = 0; i < words.length; i++) {
-      words[i] = words[i][0].toUpperCase() + words[i].substring(1);
-    }
-
-    return words.join(' ');
+        yearDataList.length,
+            (yearIndex) =>
+            List.filled(yearDataList[yearIndex].items.length, false));
   }
 
   @override
@@ -157,14 +144,13 @@ class _MyHomePageState extends State<MyHomePage> {
           children: [
             Expanded(
               child: ListView.builder(
-                itemCount: widget.yearDataList.length,
+                itemCount: yearDataList.length,
                 itemBuilder: (context, yearIndex) {
-                  YearData yearData = widget.yearDataList[yearIndex];
+                  YearData yearData = yearDataList[yearIndex];
                   return Container(
                     // Spaced between the years
                     margin: EdgeInsets.all(10),
                     child: ExpansionTile(
-                      // add ExpansionTile colors and props.
                       backgroundColor: Color(0xFFEEEDED),
                       collapsedBackgroundColor: Color(0xFFEEEDED),
                       shape: const RoundedRectangleBorder(
@@ -196,15 +182,9 @@ class _MyHomePageState extends State<MyHomePage> {
                                       List.filled(yearData.items.length, true);
                                 });
                               },
-                              child: Text(
-                                'Select All',
-                                style: TextStyle(color: Colors.black),
-                              ),
+                              child: Text('Select All',style: TextStyle(color: Colors.black),),
                             ),
-                            Text(
-                              ' : ',
-                              style: TextStyle(color: Colors.black),
-                            ),
+                            Text(' : ',style: TextStyle(color: Colors.black),),
                             TextButton(
                               onPressed: () {
                                 setState(() {
@@ -212,10 +192,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                       List.filled(yearData.items.length, false);
                                 });
                               },
-                              child: Text(
-                                'Clear All',
-                                style: TextStyle(color: Colors.black),
-                              ),
+                              child: Text('Clear All',style: TextStyle(color: Colors.black),),
                             ),
                           ],
                         ),
@@ -223,7 +200,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           gridDelegate:
-                              SliverGridDelegateWithFixedCrossAxisCount(
+                          SliverGridDelegateWithFixedCrossAxisCount(
                             crossAxisCount: 4,
                             crossAxisSpacing: 8.0,
                             mainAxisSpacing: 8.0,
@@ -234,7 +211,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               onTap: () {
                                 setState(() {
                                   isSelectedList[yearIndex][index] =
-                                      !isSelectedList[yearIndex][index];
+                                  !isSelectedList[yearIndex][index];
                                 });
                               },
                               child: Container(
@@ -279,7 +256,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             ElevatedButton(
               onPressed: () {
-                submitStatus();
+                submitStatus(context); // Pass context to the function
               },
               child: Text('Submit'),
             ),
@@ -289,24 +266,44 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 
-  void submitStatus() {
+  void submitStatus(BuildContext context) {
+    Map<String, bool> coursesStatus = {};
+
     for (int yearIndex = 0; yearIndex < isSelectedList.length; yearIndex++) {
-      YearData yearData = widget.yearDataList[yearIndex];
-      print('Year ${yearData.title} status:');
-      for (int itemIndex = 0;
-          itemIndex < isSelectedList[yearIndex].length;
-          itemIndex++) {
-        String item = yearData.items[itemIndex];
+      YearData yearData = yearDataList[yearIndex];
+      for (int itemIndex = 0; itemIndex < isSelectedList[yearIndex].length; itemIndex++) {
+        String itemName = yearData.items[itemIndex];
         bool isSelected = isSelectedList[yearIndex][itemIndex];
-        print('$item: ${isSelected ? 'Selected' : 'Not Selected'}');
+
+
+        // Save the status to the coursesStatus map
+        coursesStatus[itemName] = isSelected;
       }
-      print('----------------------');
     }
+    print(coursesStatus.toString());
+    // Save the coursesStatus map to Firestore
+    saveStatusToFirestore(context, widget.studentId, coursesStatus);
+
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (context) => HomePage(),
-      ),
+      MaterialPageRoute(builder: (context) => HomePage(studentId: widget.studentId,)),
     );
   }
+
+  void saveStatusToFirestore(BuildContext context, String studentId, Map<String, bool> coursesStatus) async {
+    try {
+      // Add or update the document in the 'student-course' collection
+      await FirebaseFirestore.instance
+          .collection('student-course')  // Assuming your collection is named 'students'
+          .doc('$studentId')
+          .set({
+        'studentId': studentId,
+        'courses': coursesStatus,
+      });
+    } catch (e) {
+      print('Error saving status to Firestore: $e');
+    }
+  }
+
 }
+

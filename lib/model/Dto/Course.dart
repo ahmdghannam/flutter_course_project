@@ -1,16 +1,14 @@
 class Course {
-  String code;
-  String name;
-  String sectionNumber;
-  String activity;
-  String time;
-  String hours;
+  int courseId;
+  String courseName;
+  int defaultSemester;
+  int preRequisitesCourses;
+  int creditHours;
 
-  Course(this.code,this.name, this.sectionNumber, this.activity, this.time,
-      this.hours);
+  Course(this.courseId,this.courseName, this.defaultSemester, this.preRequisitesCourses, this.creditHours);
 
   @override
   String toString() {
-    return 'Course{code: $code, name: $name, sectionNumber: $sectionNumber, activity: $activity, time: $time, hours: $hours} ============\n\n';
+    return 'Course{courseId: $courseId, courseName: $courseName, defaultSemester: $defaultSemester, preRequisitesCourses: $preRequisitesCourses, creditHours: $creditHours} ========\n\n';
   }
 }
