@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_course_project/view/HomePage.dart';
 import 'StartingPage.dart';
 import 'signup.dart'; // to import the RoundedTextField
 
@@ -108,7 +109,7 @@ class LoginPage extends StatelessWidget {
       print("Login Successful");
 
       // navigation logic to the next screen after successful login
-      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => StartingPage()));
+      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => HomePage()));
     } catch (e) {
       print("Login Failed: $e");
       // Handle login failure
