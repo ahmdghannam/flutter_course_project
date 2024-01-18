@@ -108,7 +108,7 @@ class LoginPage extends StatelessWidget {
       print("Login Successful");
 
       // navigation logic to the next screen after successful login
-      Navigator.push(context,MaterialPageRoute(builder: (context) => StartingPage(),),);
+      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => StartingPage()));
     } catch (e) {
       print("Login Failed: $e");
       // Handle login failure
