@@ -1,18 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_course_project/view/HomePage.dart';
+import '../model/localDatabase/sharedPrefferences.dart';
 import 'StartingPage.dart';
 import 'signup.dart'; // to import the RoundedTextField
 
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(fontFamily: 'RobotoMono'),
-      home: LoginPage(),
-      debugShowCheckedModeBanner: false,
+    return FutureBuilder<bool?>(
+      future: isLoggedIn(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          bool? isLoggedI = snapshot.data;
+          return MaterialApp(
+            theme: ThemeData(fontFamily: 'RobotoMono'),
+            home: isLoggedI == true ? HomePage() : LoginPage(),
+            debugShowCheckedModeBanner: false,
+          );
+        } else {
+          // While the Future is still in progress, you can show a loading indicator or another widget.
+          return const CircularProgressIndicator();
+        }
+      },
     );
   }
 }
+
 
 class LoginPage extends StatelessWidget {
   final TextEditingController emailController = TextEditingController();
@@ -106,9 +120,9 @@ class LoginPage extends StatelessWidget {
 
       // User logged in successfully
       print("Login Successful");
-
+      setAsLoggedIn();
       // navigation logic to the next screen after successful login
-      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => StartingPage()));
+      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => HomePage()));
     } catch (e) {
       print("Login Failed: $e");
       // Handle login failure
