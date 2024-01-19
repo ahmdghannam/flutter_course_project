@@ -3,7 +3,6 @@ import 'package:flutter_course_project/view/TableCreatorPage.dart';
 import 'StartingPage.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
 _launchURLInBrowser(String url) async {
   if (await canLaunch(url)) {
     await launch(url);
@@ -13,26 +12,30 @@ _launchURLInBrowser(String url) async {
 }
 
 class HomePage extends StatelessWidget {
+  final String studentId;
+
+  HomePage({required this.studentId});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Home'),
+        title: Text('My App'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-        Image.asset('assets/omarlogo.png', height: 100,width: double.infinity,fit: BoxFit.fill,),
-            // Container(height: 16),
+            Image.asset('assets/logo.png'),
+            SizedBox(height: 16),
             Container(
               padding: EdgeInsets.all(25.0),
               child: Text(
-                'Welcome to TableCraft, where we effortlessly transform your student data into organized tables! Simplify your workload and enhance efficiency with just a few clicks.',
+                'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
                 textAlign: TextAlign.center,
               ),
             ),
-            Container(height: 4),
+            SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -40,7 +43,7 @@ class HomePage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => const TableCreatorPage()),
                 );
               },
-              child: Text('Create New Table', style: TextStyle(color: Colors.white),),
+              child: Text('Create New Table'),
               style: ElevatedButton.styleFrom(
                 fixedSize: Size(250, 70),
                 backgroundColor: Color(0xff842700),
@@ -56,10 +59,10 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => StartingPage()),
+                  MaterialPageRoute(builder: (context) => StartingPage(studentId: studentId,)),
                 );// Add functionality for updating passed courses
               },
-              child: Text('Update Passed Courses', style: TextStyle(color: Colors.white)),
+              child: Text('Update Passed Courses'),
               style: ElevatedButton.styleFrom(
                 fixedSize: Size(250, 70),
                 backgroundColor: Color(0xff842700),
@@ -75,7 +78,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 _launchURLInBrowser('https://www.aaup.edu/Academics/Undergraduate-Studies/Faculty-Engineering/Computer-Systems-Engineering-Department/Computer-Systems-Engineering/Curriculum');
               },
-              child: Text('Go to CSE Plan', style: TextStyle(color: Colors.white)),
+              child: Text('Go to CSE Plan'),
               style: ElevatedButton.styleFrom(
                 fixedSize: Size(250, 70),
                 backgroundColor: Color(0xff842700),

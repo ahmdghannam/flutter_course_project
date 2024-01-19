@@ -7,6 +7,22 @@ import '../model/Dto/Course.dart';
 void main() {
   runApp(GeneratedTableDisplay());
 }
+class UICourse{
+  String code;
+  String name;
+  String sectionNumber;
+  String activity;
+  String time;
+  String hours;
+
+  UICourse(this.code, this.name, this.sectionNumber, this.activity, this.time,
+      this.hours);
+
+  @override
+  String toString() {
+    return 'Course{code: $code, name: $name, sectionNumber: $sectionNumber, activity: $activity, time: $time, hours: $hours}';
+  }
+}
 
 class GeneratedTableDisplay extends StatefulWidget {
   const GeneratedTableDisplay({super.key});
@@ -16,7 +32,7 @@ class GeneratedTableDisplay extends StatefulWidget {
 }
 
 class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
-  List<Course> courses = [];
+  List<UICourse> courses = [];
 
   @override
   void initState() {
@@ -26,7 +42,7 @@ class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
 
   Future<void> _loadCourses() async {
     try {
-      List<Course> fetchedCourses = await getAvailableSections();
+      List<UICourse> fetchedCourses = testCourses();
       print(fetchedCourses.toString());
       setState(() {
         courses = fetchedCourses.sublist(0, 10);
@@ -86,12 +102,12 @@ class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
     return DataColumn(
         label: Expanded(
             child: Text(
-      text,
-      overflow: TextOverflow.fade,
-    )));
+              text,
+              overflow: TextOverflow.fade,
+            )));
   }
 
-  DataRow CustomDataRow(Course course) {
+  DataRow CustomDataRow(UICourse course) {
     return DataRow(cells: [
       CustomDataCell(course.code),
       CustomDataCell(course.name),
@@ -141,45 +157,45 @@ class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
   }
 }
 
-List<Course> testCourses() {
+List<UICourse> testCourses() {
   return [
-    Course('12412', 'Computer Science 101', 'CS101-01', 'Lecture', '9:00 AM',
+    UICourse('12412', 'Computer Science 101', 'CS101-01', 'Lecture', '9:00 AM',
         '3 hours'),
-    Course('123456789', 'Mathematics 201', 'MATH201-02', 'Lab', '1:30 PM',
+    UICourse('123456789', 'Mathematics 201', 'MATH201-02', 'Lab', '1:30 PM',
         '2 hours'),
-    Course('987654321', 'History 110', 'HIST110-01', 'Discussion', '11:00 AM',
+    UICourse('987654321', 'History 110', 'HIST110-01', 'Discussion', '11:00 AM',
         '1.5 hours'),
-    Course('567890123', 'Physics 301', 'PHYS301-03', 'Lecture', '10:00 AM',
+    UICourse('567890123', 'Physics 301', 'PHYS301-03', 'Lecture', '10:00 AM',
         '3 hours'),
-    Course('456789012', 'English 202', 'ENGL202-04', 'Seminar', '2:30 PM',
+    UICourse('456789012', 'English 202', 'ENGL202-04', 'Seminar', '2:30 PM',
         '2 hours'),
-    Course('654321098', 'Chemistry 202', 'CHEM202-01', 'Lab', '3:30 PM',
+    UICourse('654321098', 'Chemistry 202', 'CHEM202-01', 'Lab', '3:30 PM',
         '2 hours'),
-    Course('234567890', 'Psychology 110', 'PSYCH110-02', 'Discussion',
+    UICourse('234567890', 'Psychology 110', 'PSYCH110-02', 'Discussion',
         '12:30 PM', '1.5 hours'),
-    Course('890123456', 'Biology 204', 'BIOL204-05', 'Lecture', '8:30 AM',
+    UICourse('890123456', 'Biology 204', 'BIOL204-05', 'Lecture', '8:30 AM',
         '3 hours'),
-    Course('123098765', 'Economics 301', 'ECON301-03', 'Seminar', '4:00 PM',
+    UICourse('123098765', 'Economics 301', 'ECON301-03', 'Seminar', '4:00 PM',
         '2 hours'),
-    Course('567801234', 'Art History 150', 'ARTH150-02', 'Lab', '2:00 PM',
+    UICourse('567801234', 'Art History 150', 'ARTH150-02', 'Lab', '2:00 PM',
         '2 hours'),
-    Course('345678901', 'Sociology 210', 'SOC210-01', 'Discussion', '10:30 AM',
+    UICourse('345678901', 'Sociology 210', 'SOC210-01', 'Discussion', '10:30 AM',
         '1.5 hours'),
-    Course('678901234', 'Political Science 220', 'POLSCI220-04', 'Lecture',
+    UICourse('678901234', 'Political Science 220', 'POLSCI220-04', 'Lecture',
         '11:30 AM', '3 hours'),
-    Course(
+    UICourse(
         '901234567', 'Spanish 101', 'SPAN101-03', 'Lab', '3:00 PM', '2 hours'),
-    Course('234567890', 'Music 130', 'MUSIC130-02', 'Seminar', '1:00 PM',
+    UICourse('234567890', 'Music 130', 'MUSIC130-02', 'Seminar', '1:00 PM',
         '2 hours'),
-    Course('890123456', 'Physical Education 102', 'PE102-01', 'Discussion',
+    UICourse('890123456', 'Physical Education 102', 'PE102-01', 'Discussion',
         '12:00 PM', '1.5 hours'),
-    Course('123456789', 'Geology 205', 'GEOL205-06', 'Lecture', '9:30 AM',
+    UICourse('123456789', 'Geology 205', 'GEOL205-06', 'Lecture', '9:30 AM',
         '3 hours'),
-    Course('456789012', 'Philosophy 210', 'PHIL210-04', 'Lab', '4:30 PM',
+    UICourse('456789012', 'Philosophy 210', 'PHIL210-04', 'Lab', '4:30 PM',
         '2 hours'),
-    Course('654321098', 'Statistics 301', 'STAT301-02', 'Discussion', '2:30 PM',
+    UICourse('654321098', 'Statistics 301', 'STAT301-02', 'Discussion', '2:30 PM',
         '1.5 hours'),
-    Course('234567890', 'Engineering 202', 'ENGR202-03', 'Seminar', '10:30 AM',
+    UICourse('234567890', 'Engineering 202', 'ENGR202-03', 'Seminar', '10:30 AM',
         '2 hours'),
   ];
 }
