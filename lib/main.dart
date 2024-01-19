@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'view/login.dart'; // Import the SignUpPage
+import 'view/login.dart';
 import 'model/firebase/firebase_options.dart';
 
 void main() async {
@@ -19,7 +19,6 @@ void main() async {
         theme: ThemeData(fontFamily: 'RobotoMono'),
         debugShowCheckedModeBanner: false,
       )
-
   );
 }
 

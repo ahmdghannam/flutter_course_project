@@ -6,16 +6,6 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'StartingPage.dart';
 
-_launchURLInBrowser(String url) async {
-  if (await canLaunch(url)) {
-    await launch(url);
-  } else {
-    print('Could not launch $url');
-  }
-}
-
-
-
 class HomePage extends StatelessWidget {
   final String studentId;
   HomePage({required this.studentId});
@@ -138,5 +128,13 @@ class Page1 extends StatelessWidget {
         child: Text('Page 1 Content'),
       ),
     );
+  }
+}
+
+_launchURLInBrowser(String url) async {
+  if (await canLaunch(url)) {
+    await launch(url);
+  } else {
+    print('Could not launch $url');
   }
 }
