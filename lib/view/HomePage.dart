@@ -13,6 +13,10 @@ _launchURLInBrowser(String url) async {
 }
 
 class HomePage extends StatelessWidget {
+  final String studentId;
+
+  HomePage({required this.studentId});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +60,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => StartingPage()),
+                  MaterialPageRoute(builder: (context) => StartingPage(studentId: studentId,)),
                 );// Add functionality for updating passed courses
               },
               child: Text('Update Passed Courses', style: TextStyle(color: Colors.white)),
