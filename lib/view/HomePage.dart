@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_course_project/model/localDatabase/sharedPrefferences.dart';
 import 'package:flutter_course_project/view/ProfilePage.dart';
 import 'package:flutter_course_project/view/TableCreatorPage.dart';
-import 'StartingPage.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+import 'StartingPage.dart';
 
 _launchURLInBrowser(String url) async {
   if (await canLaunch(url)) {
@@ -13,11 +14,16 @@ _launchURLInBrowser(String url) async {
   }
 }
 
-final List<Widget> pages = [HomePage(), StartingPage(), ProfilePage()];
+
 
 class HomePage extends StatelessWidget {
+  final String studentId;
+  final List<Widget> pages = [HomePage(studentId: studentId,), StartingPage(studentId: studentId,), ProfilePage()];
+  HomePage({required this.studentId});
+
   @override
   Widget build(BuildContext context) {
+    setAsLoggedIn();
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
@@ -26,7 +32,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-        Image.asset('assets/omarlogo.png', height: 100,width: double.infinity,fit: BoxFit.fill,),
+        Image.asset('assets/omarlogo.png', height: 100,width: double.infinity,fit: BoxFit.fitHeight,),
             // Container(height: 16),
             Container(
               padding: EdgeInsets.all(25.0),
@@ -59,7 +65,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => StartingPage()),
+                  MaterialPageRoute(builder: (context) => StartingPage(studentId: studentId,)),
                 );// Add functionality for updating passed courses
               },
               child: Text('Update Passed Courses', style: TextStyle(color: Colors.white)),
