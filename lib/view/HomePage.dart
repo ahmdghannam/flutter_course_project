@@ -18,11 +18,12 @@ _launchURLInBrowser(String url) async {
 
 class HomePage extends StatelessWidget {
   final String studentId;
-  final List<Widget> pages = [HomePage(studentId: studentId,), StartingPage(studentId: studentId,), ProfilePage()];
   HomePage({required this.studentId});
+  late final List<Widget> pages;
 
   @override
   Widget build(BuildContext context) {
+    pages=[HomePage(studentId: studentId,), StartingPage(studentId: studentId,), ProfilePage()];
     setAsLoggedIn();
     return Scaffold(
       appBar: AppBar(

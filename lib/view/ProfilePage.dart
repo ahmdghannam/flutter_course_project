@@ -13,7 +13,7 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-final List<Widget> pages = [HomePage(), StartingPage(), ProfilePage()];
+final List<Widget> pages = [HomePage(studentId: "",), StartingPage(studentId: "",), ProfilePage()];
 
 class _ProfilePageState extends State<ProfilePage> {
   @override
