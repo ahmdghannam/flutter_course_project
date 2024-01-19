@@ -3,25 +3,6 @@ import 'package:flutter/material.dart';
 import 'HomePage.dart';
 import 'package:flutter_course_project/model/exelFiles/ReadCoursesFromCSV.dart';
 
-class YearData {
-  final String title;
-  final List<Course> items;
-
-  YearData({required this.title, required this.items});
-}
-
-String capitalizeFirstLetterOfEachWord(String text) {
-  List<String> words = text.toLowerCase().split(' ');
-  for (int i = 0; i < words.length; i++) {
-    if (words[i] == 'ii' || words[i] == 'iii' || words[i].startsWith('(')) {
-      words[i] = words[i].toUpperCase();
-    } else {
-      words[i] = words[i][0].toUpperCase() + words[i].substring(1);
-    }
-  }
-  return words.join(' ');
-}
-
 class StartingPage extends StatefulWidget {
   final String studentId;
 
@@ -39,6 +20,8 @@ class StartingPageState extends State<StartingPage> {
   Future<void> _loadCourses() async {
     try {
       loadedCourses = await loadCSV();
+      print("loaded courses \n");
+      print(loadedCourses.toString());
       _convertToYearDataList(loadedCourses);
     } catch (error) {
       print("Error loading courses: $error");
@@ -304,4 +287,23 @@ class StartingPageState extends State<StartingPage> {
       print('Error saving status to Firestore: $e');
     }
   }
+}
+
+String capitalizeFirstLetterOfEachWord(String text) {
+  List<String> words = text.toLowerCase().split(' ');
+  for (int i = 0; i < words.length; i++) {
+    if (words[i] == 'ii' || words[i] == 'iii' || words[i].startsWith('(')) {
+      words[i] = words[i].toUpperCase();
+    } else {
+      words[i] = words[i][0].toUpperCase() + words[i].substring(1);
+    }
+  }
+  return words.join(' ');
+}
+
+class YearData {
+  final String title;
+  final List<Course> items;
+
+  YearData({required this.title, required this.items});
 }

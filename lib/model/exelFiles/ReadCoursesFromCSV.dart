@@ -56,7 +56,7 @@ class _AppState extends State<App> {
 }
 
 Future<List<Course>> loadCSV() async {
-  String filePath = "courses.csv"; // default
+  String filePath = "assets/courses.csv"; // default
   List<List<dynamic>> _data = [];
   List<Course> courses = [];
   var result = await rootBundle.loadString(filePath);
