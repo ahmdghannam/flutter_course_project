@@ -12,26 +12,34 @@ class MyApp extends StatelessWidget {
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done) {
           bool? isLoggedI = snapshot.data;
-          return FutureBuilder(future: getUserID(), builder:(context,snapshot){
-            if (snapshot.connectionState == ConnectionState.done){
-              String? userId=snapshot.data;
-              return MaterialApp(
-              theme: ThemeData(fontFamily: 'RobotoMono'),
-              home: isLoggedI == true ? HomePage(studentId: userId!) : LoginPage(),
-              debugShowCheckedModeBanner: false,
-            );
-            }
-            else {
-              return const CircularProgressIndicator();
-            }
-          } );
-
+          return showHomeIfLoggedIn(isLoggedI);
         } else {
           // While the Future is still in progress, you can show a loading indicator or another widget.
           return const CircularProgressIndicator();
         }
       },
     );
+  }
+
+  FutureBuilder<String?> showHomeIfLoggedIn(bool? isLoggedI) {
+    return FutureBuilder(
+        future: getUserID(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            String? userId = snapshot.data;
+            print("is logged in $isLoggedI");
+            print("the user id is $userId");
+            return MaterialApp(
+              theme: ThemeData(fontFamily: 'RobotoMono'),
+              home: isLoggedI == true
+                  ? HomePage(studentId: userId ?? "")
+                  : LoginPage(),
+              debugShowCheckedModeBanner: false,
+            );
+          } else {
+            return const CircularProgressIndicator();
+          }
+        });
   }
 }
 
@@ -120,8 +128,8 @@ class LoginPage extends StatelessWidget {
     String password = passwordController.text;
 
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
+      UserCredential userCredential =
+          await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -133,7 +141,12 @@ class LoginPage extends StatelessWidget {
       print("Login Successful");
 
       // navigation logic to the next screen after successful login
-      Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) => HomePage(studentId: studentid),),);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage(studentId: studentid),
+        ),
+      );
     } catch (e) {
       print("Login Failed: $e");
       // Handle login failure

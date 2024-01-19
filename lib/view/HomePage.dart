@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_course_project/model/localDatabase/sharedPrefferences.dart';
 import 'package:flutter_course_project/view/TableCreatorPage.dart';
 import 'StartingPage.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -18,6 +19,7 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    setAsLoggedIn();
     return Scaffold(
       appBar: AppBar(
         title: Text('Home'),
@@ -26,7 +28,7 @@ class HomePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-        Image.asset('assets/omarlogo.png', height: 100,width: double.infinity,fit: BoxFit.fill,),
+        Image.asset('assets/omarlogo.png', height: 100,width: double.infinity,fit: BoxFit.fitHeight,),
             // Container(height: 16),
             Container(
               padding: EdgeInsets.all(25.0),
