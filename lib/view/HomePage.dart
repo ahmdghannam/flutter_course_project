@@ -20,22 +20,22 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My App'),
+        title: Text('Home'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image.asset('assets/logo.png'),
-            SizedBox(height: 16),
+        Image.asset('assets/omarlogo.png', height: 100,width: double.infinity,fit: BoxFit.fill,),
+            // Container(height: 16),
             Container(
               padding: EdgeInsets.all(25.0),
               child: Text(
-                'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
+                'Welcome to TableCraft, where we effortlessly transform your student data into organized tables! Simplify your workload and enhance efficiency with just a few clicks.',
                 textAlign: TextAlign.center,
               ),
             ),
-            SizedBox(height: 16),
+            Container(height: 4),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
@@ -43,7 +43,7 @@ class HomePage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => const TableCreatorPage()),
                 );
               },
-              child: Text('Create New Table'),
+              child: Text('Create New Table', style: TextStyle(color: Colors.white),),
               style: ElevatedButton.styleFrom(
                 fixedSize: Size(250, 70),
                 backgroundColor: Color(0xff842700),
@@ -62,7 +62,7 @@ class HomePage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => StartingPage(studentId: studentId,)),
                 );// Add functionality for updating passed courses
               },
-              child: Text('Update Passed Courses'),
+              child: Text('Update Passed Courses', style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
                 fixedSize: Size(250, 70),
                 backgroundColor: Color(0xff842700),
@@ -78,7 +78,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 _launchURLInBrowser('https://www.aaup.edu/Academics/Undergraduate-Studies/Faculty-Engineering/Computer-Systems-Engineering-Department/Computer-Systems-Engineering/Curriculum');
               },
-              child: Text('Go to CSE Plan'),
+              child: Text('Go to CSE Plan', style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
                 fixedSize: Size(250, 70),
                 backgroundColor: Color(0xff842700),
