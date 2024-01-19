@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_course_project/model/localDatabase/sharedPrefferences.dart';
 import 'StartingPage.dart';
 
 class SignUpPage extends StatelessWidget {
@@ -95,8 +96,10 @@ class SignUpPage extends StatelessWidget {
         'email': email,
       });
 
+      saveUserID(studentid);
       // User registered successfully
       print("Registration Successful");
+
 
       // Navigation to the next screen after successful registration
       Navigator.pop(context);

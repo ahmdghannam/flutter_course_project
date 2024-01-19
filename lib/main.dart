@@ -13,6 +13,14 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FirebaseFirestore.instance.settings;
   print("Firebase initialization complete.");
-  runApp(MyApp());
+  runApp(
+      MaterialApp(
+        home: MyApp(),
+        theme: ThemeData(fontFamily: 'RobotoMono'),
+        debugShowCheckedModeBanner: false,
+      )
+
+
+  );
 }
 

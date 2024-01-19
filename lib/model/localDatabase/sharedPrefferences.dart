@@ -1,6 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 
 String loginKey = "isLoggedIn";
+String userIDKey = "userIDKey";
 
 dynamic getFromSharedPrefs(String key) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
@@ -20,4 +21,14 @@ void setAsLoggedOut() async {
 Future<bool?> isLoggedIn() async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   return sharedPreferences.getBool(loginKey);
+}
+
+void saveUserID(String userId) async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  sharedPreferences.setString(userIDKey, userId);
+}
+
+Future<String?> getUserID() async{
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  return sharedPreferences.getString(userIDKey);
 }
