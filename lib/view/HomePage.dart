@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_course_project/view/ProfilePage.dart';
 import 'package:flutter_course_project/view/TableCreatorPage.dart';
 import 'StartingPage.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -11,6 +12,8 @@ _launchURLInBrowser(String url) async {
     print('Could not launch $url');
   }
 }
+
+final List<Widget> pages = [HomePage(), StartingPage(), ProfilePage()];
 
 class HomePage extends StatelessWidget {
   @override
@@ -91,13 +94,14 @@ class HomePage extends StatelessWidget {
       ),
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: 0,
+        type: BottomNavigationBarType.fixed,
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.table_chart),
+            icon: Icon(Icons.app_registration),
             label: 'Create New Table',
           ),
           BottomNavigationBarItem(
@@ -105,6 +109,12 @@ class HomePage extends StatelessWidget {
             label: 'Profile',
           ),
         ],
+        onTap: (index){
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => pages[index]),
+          );
+        },
       ),
     );
   }
