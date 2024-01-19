@@ -20,8 +20,6 @@ class StartingPageState extends State<StartingPage> {
   Future<void> _loadCourses() async {
     try {
       loadedCourses = await loadCSV();
-      print("loaded courses \n");
-      print(loadedCourses.toString());
       _convertToYearDataList(loadedCourses);
     } catch (error) {
       print("Error loading courses: $error");

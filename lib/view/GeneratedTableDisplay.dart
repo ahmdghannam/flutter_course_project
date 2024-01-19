@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:flutter_course_project/model/exelFiles/ReadCoursesFromCSV.dart';
-
-import '../model/Dto/Course.dart';
 
 void main() {
   runApp(GeneratedTableDisplay());
