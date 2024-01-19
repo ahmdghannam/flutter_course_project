@@ -25,7 +25,7 @@ class SignUpPage extends StatelessWidget {
             Column(
               children: [
                 const Image(
-                  image: AssetImage("assets/logo.png"),
+                  image: AssetImage("assets/omarlogo.png"),
                   height: 250,
                 ),
                 RoundedTextField(
@@ -99,8 +99,8 @@ class SignUpPage extends StatelessWidget {
       print("Registration Successful");
 
       // Navigation to the next screen after successful registration
-      Navigator.push(
-        context,
+      Navigator.pop(context);
+      Navigator.pushReplacement(context,
         MaterialPageRoute(
           builder: (context) => StartingPage(studentId: studentid),
         ),
