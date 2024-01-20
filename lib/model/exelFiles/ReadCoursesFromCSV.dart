@@ -8,7 +8,7 @@ import '../Dto/CseCourse.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   print("hi");
-  List<AvailableSection> ll = await loadAvailableSections();
+  List<CseCourse> ll = await loadAllCseCourses();
   print(ll.toString());
 }
 
@@ -62,11 +62,12 @@ Future<List<CseCourse>> _loadCseCourses(String path) async {
   for (var d in _data) {
     try {
       courses.add(CseCourse(
-        int.parse(d[0].toString()), // courseId
+        d[0].toString(), // courseId
         d[1].toString(), // courseName
         int.parse(d[2].toString()), // defaultSemester
         int.parse(d[3].toString()), // creditHours
-        int.parse(d[4].toString()), // preRequisitesCourses
+        int.parse(d[4].toString()),
+        int.parse(d[5].toString())// preRequisitesCourses
       ));
     } catch (e) {
       print('Error parsing row: $d, Error: $e');

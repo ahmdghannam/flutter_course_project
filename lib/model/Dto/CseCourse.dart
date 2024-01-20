@@ -1,15 +1,20 @@
 class CseCourse {
-  int courseId;
+  String courseId;
   String courseName;
   int defaultSemester;
   int creditHours;
-  int preRequisitesCourses;
+  int preRequisitesCoursesCount;
+  int childrenCount;
 
-  CseCourse(this.courseId, this.courseName, this.defaultSemester, this.creditHours,
-      this.preRequisitesCourses);
+  CseCourse(this.courseId, this.courseName, this.defaultSemester,
+      this.creditHours, this.preRequisitesCoursesCount, this.childrenCount);
+
+  int evaluateTheWeight(int currentSemester){
+    return preRequisitesCoursesCount + childrenCount + (currentSemester-defaultSemester);
+  }
 
   @override
   String toString() {
-    return 'Course{courseId: $courseId, courseName: $courseName, defaultSemester: $defaultSemester, creditHours: $creditHours, preRequisitesCourses: $preRequisitesCourses}';
+    return 'CseCourse{courseId: $courseId, courseName: $courseName, defaultSemester: $defaultSemester, creditHours: $creditHours, preRequisitesCoursesCount: $preRequisitesCoursesCount, childrenCount: $childrenCount}';
   }
 }
