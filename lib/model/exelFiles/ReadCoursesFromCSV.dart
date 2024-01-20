@@ -75,3 +75,5 @@ Future<List<CseCourse>> _loadCseCourses(String path) async {
   // print(courses.map((e) => "Course ID: ${e.courseId}, Name: ${e.courseName}, Semester: ${e.defaultSemester}, Credit Hours: ${e.creditHours}, Prerequisites: ${e.preRequisitesCourses} \n").toList());
   return courses;
 }
+
+

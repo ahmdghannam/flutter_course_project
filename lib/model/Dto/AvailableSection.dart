@@ -11,6 +11,6 @@ class AvailableSection {
 
   @override
   String toString() {
-    return 'Course{code: $code, name: $name, sectionNumber: $sectionNumber, activity: $activity, time: $time, hours: $hours} ============\n\n';
+    return 'Course{code: $code, name: $name, sectionNumber: $sectionNumber, activity: $activity, time: $time, hours: $hours} \n\n============\n\n';
   }
 }
