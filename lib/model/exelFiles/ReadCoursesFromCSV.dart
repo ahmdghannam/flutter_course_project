@@ -11,52 +11,18 @@ class Course {
 
   Course(this.courseId, this.courseName, this.defaultSemester, this.creditHours, this.preRequisitesCourses);
 }
-void main() => runApp(App());
 
-class App extends StatefulWidget {
-  const App({Key? key}) : super(key: key);
-
-  @override
-  State<App> createState() => _AppState();
+Future<List<Course>> loadAllCseCourses() async {
+  return _loadCSV("assets/courses.csv");
 }
 
-class _AppState extends State<App> {
-  List<Course> courses = [];
 
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Courses'),
-        ),
-        body: Text('Get Courses'),),
-    );
-  }
-
-  Widget buildListView() {
-    if (courses.isEmpty) {
-      return Column(
-        children: [Text('No data found!!')],
-      );
-    }
-
-    return Column(
-      children: courses
-          .map(
-            (e) => ListTile(
-          title: Text(
-            "Course ID: ${e.courseId}, Name: ${e.courseName}, Semester: ${e.defaultSemester}, Credit Hours: ${e.creditHours}, Prerequisites: ${e.preRequisitesCourses}",
-          ),
-        ),
-      )
-          .toList(),
-    );
-  }
+Future<List<Course>> loadAvailableSections() async {
+  return _loadCSV("assets/filtered_sections.csv");
 }
 
-Future<List<Course>> loadCSV() async {
-  String filePath = "assets/courses.csv"; // default
+Future<List<Course>> _loadCSV(String path) async {
+  String filePath = path; // default
   List<List<dynamic>> _data = [];
   List<Course> courses = [];
   var result = await rootBundle.loadString(filePath);

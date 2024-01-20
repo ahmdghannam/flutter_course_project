@@ -97,11 +97,10 @@ class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
 
   DataColumn CustomColumnHeader(String text) {
     return DataColumn(
-        label: Expanded(
-            child: Text(
-              text,
-              overflow: TextOverflow.fade,
-            )));
+        label: Text(
+          text,
+          overflow: TextOverflow.fade,
+        ));
   }
 
   DataRow CustomDataRow(UICourse course) {
@@ -117,12 +116,10 @@ class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
 
   DataCell CustomDataCell(String text) {
     return DataCell(
-      Expanded(
-        child: Text(
-          text,
-          softWrap: true,
-          overflow: TextOverflow.fade,
-        ),
+      Text(
+        text,
+        softWrap: true,
+        overflow: TextOverflow.fade,
       ),
     );
   }

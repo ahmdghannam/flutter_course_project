@@ -19,7 +19,7 @@ class StartingPageState extends State<StartingPage> {
 
   Future<void> _loadCourses() async {
     try {
-      loadedCourses = await loadCSV();
+      loadedCourses = await loadAllCseCourses();
       _convertToYearDataList(loadedCourses);
     } catch (error) {
       print("Error loading courses: $error");
@@ -261,7 +261,7 @@ class StartingPageState extends State<StartingPage> {
     // Save the coursesStatus map to Firestore
     saveStatusToFirestore(context, widget.studentId, coursesStatus);
 
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
           builder: (context) => HomePage(
