@@ -1,4 +1,4 @@
-class Course {
+class AvailableSection {
   String code;
   String name;
   String sectionNumber;
@@ -6,8 +6,8 @@ class Course {
   String time;
   String hours;
 
-  Course(this.code,this.name, this.sectionNumber, this.activity, this.time,
-      this.hours);
+  AvailableSection({required this.code,required this.name, required this.sectionNumber, required this.activity, required this.time,
+      required this.hours});
 
   @override
   String toString() {

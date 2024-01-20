@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import '../model/Dto/CseCourse.dart';
 import 'HomePage.dart';
 import 'package:flutter_course_project/model/exelFiles/ReadCoursesFromCSV.dart';
 
@@ -13,7 +14,7 @@ class StartingPage extends StatefulWidget {
 }
 
 class StartingPageState extends State<StartingPage> {
-  List<Course> loadedCourses = [];
+  List<CseCourse> loadedCourses = [];
   List<List<bool>> isSelectedList = [];
   List<YearData> yearDataList = [];
 
@@ -26,7 +27,7 @@ class StartingPageState extends State<StartingPage> {
     }
   }
 
-  void _convertToYearDataList(List<Course> loadedCourses) {
+  void _convertToYearDataList(List<CseCourse> loadedCourses) {
     // Sort courses based on default semester
     loadedCourses
         .sort((a, b) => a.defaultSemester.compareTo(b.defaultSemester));
@@ -46,9 +47,9 @@ class StartingPageState extends State<StartingPage> {
     };
 
     // Organize courses into YearData objects
-    Map<String, List<Course>> yearDataMap = {};
+    Map<String, List<CseCourse>> yearDataMap = {};
 
-    for (Course course in loadedCourses) {
+    for (CseCourse course in loadedCourses) {
       var yearTitle = semesterToYear[course.defaultSemester];
       if (yearTitle != null) {
         yearDataMap.putIfAbsent(yearTitle, () => []);
@@ -301,7 +302,7 @@ String capitalizeFirstLetterOfEachWord(String text) {
 
 class YearData {
   final String title;
-  final List<Course> items;
+  final List<CseCourse> items;
 
   YearData({required this.title, required this.items});
 }

@@ -1,21 +1,21 @@
-import '../model/Dto/Course.dart';
+import '../model/Dto/AvailableSection.dart';
 
-Future<List<Course>> getSuggestedCourses() async {
-  List<Course>? availableSections = await _loadCourses();
-  List<Course> notFinishedCourses = [];
+Future<List<AvailableSection>> getSuggestedCourses() async {
+  List<AvailableSection>? availableSections = await _loadCourses();
+  List<AvailableSection> notFinishedCourses = [];
 
   return generateSuggestionList(availableSections, notFinishedCourses);
 }
 
-List<Course> generateSuggestionList(
-    List<Course>? availableSections, List<Course> notFinishedCourses) {
+List<AvailableSection> generateSuggestionList(
+    List<AvailableSection>? availableSections, List<AvailableSection> notFinishedCourses) {
 
 
 
   return [];
 }
 
-Future<List<Course>?> _loadCourses() async {
+Future<List<AvailableSection>?> _loadCourses() async {
   try {
     // List<Course> fetchedCourses = await getAvailableSections();
     // return fetchedCourses;
