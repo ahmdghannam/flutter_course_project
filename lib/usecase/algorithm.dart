@@ -1,7 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_course_project/model/Dto/CseCourse.dart';
 import 'package:flutter_course_project/model/Dto/UICourse.dart';
 import 'package:flutter_course_project/model/exelFiles/ReadCoursesFromCSV.dart';
+import 'package:flutter_course_project/model/localDatabase/sharedPrefferences.dart';
 
 import '../model/Dto/AvailableSection.dart';
 import '../model/Dto/FirebaseCoure.dart';
@@ -19,10 +21,11 @@ Future<List<UICourse>> getSuggestedCourses() async {
 
   List<CseCourse>? cseCourses = await loadAllCseCourses();
 
-  List<FirebaseCourse> notFinishedCourses = getPassedCoursesFromFirebase()
-      .where((element) => !element.isPassed)
-      .toList();
-
+  String? userId= await getUserID();
+  if(userId==null) {
+    return throw "user id not found";
+  }
+  List<FirebaseCourse> notFinishedCourses = await getFalseStatusCourses(userId);
   return generateSuggestionList(
       cseCourses, availableSections, notFinishedCourses
   );
@@ -158,14 +161,72 @@ List<AvailableSection> getNeededSectionJoin(
       .toList();
 }
 
-List<FirebaseCourse> getPassedCoursesFromFirebase() {
-  return [
-    FirebaseCourse('10610035', false), // advanced english
-    FirebaseCourse('230112120', false), //  ELECTRICAL CIRCUITS I
-    FirebaseCourse('240112030', false), //  DATA STRUCTURES
-    FirebaseCourse('230112240', false), //  SIGNALS AND SYSTEMS
-    FirebaseCourse('100413020', false), //  ENGINEERING MATHEMATICS II
-    FirebaseCourse('230213150', false), // ALGORITHMS ANALYSIS AND DESIGN
-    FirebaseCourse('100411010', false), // calculus 1
-  ];
+Future<List<FirebaseCourse>> getFalseStatusCourses(String studentId) async {
+  List<FirebaseCourse> falseStatusCourses = [];
+
+  try {
+    // Retrieve the student document from the 'student-course' collection
+    DocumentSnapshot studentSnapshot = await FirebaseFirestore.instance
+        .collection('student-course')
+        .doc(studentId)
+        .get();
+
+    if (studentSnapshot.exists) {
+      // Get the 'courses' map from the student document
+      Map<String, dynamic> coursesMap = studentSnapshot['courses'];
+
+      // Iterate through the coursesMap and check for false status
+      coursesMap.forEach((code, isPassed) {
+        if (isPassed == false) {
+          falseStatusCourses.add(FirebaseCourse(code, isPassed));
+        }
+      });
+
+    }
+  } catch (e) {
+    print('Error retrieving false status courses: $e');
+  }
+
+  return falseStatusCourses;
 }
+
+
+// List<FirebaseCourse> getPassedCoursesFromFirebase() {
+//   return [
+//     FirebaseCourse('10610035', false), // advanced english
+//     FirebaseCourse('230112120', false), //  ELECTRICAL CIRCUITS I
+//     FirebaseCourse('240112030', false), //  DATA STRUCTURES
+//     FirebaseCourse('230112240', false), //  SIGNALS AND SYSTEMS
+//     FirebaseCourse('100413020', false), //  ENGINEERING MATHEMATICS II
+//     FirebaseCourse('230213150', false), // ALGORITHMS ANALYSIS AND DESIGN
+//     FirebaseCourse('100411010', false), // calculus 1
+//   ];
+// }
+// Future<List<FirebaseCourse>> getFalseStatusCourses(String studentId) async {
+//   List<FirebaseCourse> falseStatusCourses = [];
+//
+//   try {
+//     // Retrieve the student document from the 'student-course' collection
+//     DocumentSnapshot studentSnapshot = await FirebaseFirestore.instance
+//         .collection('student-course')
+//         .doc(studentId)
+//         .get();
+//
+//     if (studentSnapshot.exists) {
+//       // Get the 'courses' map from the student document
+//       Map<String, dynamic> coursesMap = studentSnapshot['courses'];
+//
+//       // Iterate through the coursesMap and check for false status
+//       coursesMap.forEach((code, isPassed) {
+//         if (isPassed == false) {
+//           falseStatusCourses.add(FirebaseCourse(code, isPassed));
+//         }
+//       });
+//
+//     }
+//   } catch (e) {
+//     print('Error retrieving false status courses: $e');
+//   }
+//
+//   return falseStatusCourses;
+// }
