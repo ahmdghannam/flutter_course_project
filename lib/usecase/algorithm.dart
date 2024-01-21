@@ -5,13 +5,16 @@ import 'package:flutter_course_project/model/exelFiles/ReadCoursesFromCSV.dart';
 
 import '../model/Dto/AvailableSection.dart';
 import '../model/Dto/FirebaseCoure.dart';
+import '../model/Dto/LectureTime.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  getSuggestedCourses();
+  List<UICourse> ss= await getSuggestedCourses();
+  print(ss);
 }
 
-Future<List<AvailableSection>> getSuggestedCourses() async {
+Future<List<UICourse>> getSuggestedCourses() async {
+
   List<AvailableSection>? availableSections = await loadAvailableSections();
 
   List<CseCourse>? cseCourses = await loadAllCseCourses();
@@ -21,58 +24,119 @@ Future<List<AvailableSection>> getSuggestedCourses() async {
       .toList();
 
   return generateSuggestionList(
-      cseCourses, availableSections, notFinishedCourses);
+      cseCourses, availableSections, notFinishedCourses
+  );
 }
 
-List<AvailableSection> generateSuggestionList(
+List<UICourse> generateSuggestionList(
     List<CseCourse>? cseCourses,
     List<AvailableSection>? availableSections,
     List<FirebaseCourse> notFinishedCourses) {
+
   List<CseCourse> neededCourses =
-      getNeededCourses(cseCourses, notFinishedCourses);
-  sortTheSections(neededCourses, 6);
+      getNeededCourses(cseCourses, notFinishedCourses); //join
+
+  sortTheSections(neededCourses, 2);
+
   List<UICourse> tableToBeDisplayed = [];
-  neededCourses.forEach((element) {
+  for (var element in neededCourses) {
+    // print(element);
     addIfCanAdd(tableToBeDisplayed,availableSections,element);
-  });
-  return [];
+  }
+  return tableToBeDisplayed;
 }
 
 bool addIfCanAdd(List<UICourse> tableToBeDisplayed, List<AvailableSection>? availableSections, CseCourse element) {
+
   if(availableSections == null) return false;
-  AvailableSection chosenItem = availableSections.firstWhere((av) => av.code==element.courseId);
+
+  AvailableSection? chosenItem;
+  try {
+    chosenItem = availableSections.firstWhere((av) => av.code == element.courseId);
+  } catch (e) {
+    return false;
+  }
+
   if(noTimeConflict(tableToBeDisplayed,chosenItem)){
     tableToBeDisplayed.add(
         UICourse(chosenItem.code, chosenItem.name, chosenItem.sectionNumber, chosenItem.activity, chosenItem.time, chosenItem.hours)
     );
   }
+
   return false;
 }
 
 bool noTimeConflict(List<UICourse> tableToBeDisplayed, AvailableSection chosenItem) {
 
   for(var i in tableToBeDisplayed){
-    if(isOverlap(chosenItem.time,i.time)){
+    if(isThereAConflict(chosenItem.time,i.time)){
       return false;
     }
   }
+
   return true;
+
+}
+//[13:30-14:20 DAR B109 Sunday Tuesday Thursday]
+bool isThereAConflict(String time, String time2) {
+  if(time == time2) return true;
+  var time1asList= time.substring(1,time.length-1).split(' ');
+  var time2asList= time2.substring(1,time2.length-1).split(' ');
+
+  if(!isTheSameDay(time1asList, time2asList)) return false;
+
+  LectureTime lecture1 = parseLectureTimeString(time1asList[0]);
+  LectureTime lecture2 = parseLectureTimeString(time2asList[0]);
+
+  return lecture1.isOverlapedWith(lecture2);
 }
 
-bool isOverlap(String time, String time2) {
-  if(time == time2) return true;
-  
+// 13:30-14:20
+LectureTime parseLectureTimeString(String timeString) {
 
-  return false;
+  List<String> parts = timeString.split('-');
+  String startTime = parts[0]; //13:30
+  // You can add more error checking here if needed
+  List<String> startTimeParts = startTime.split(':');
+  int hourForStartingTime = int.parse(startTimeParts[0]);//13
+  int minuteForStartingTime = int.parse(startTimeParts[1]);//30
+
+  String endingTime = parts[1];//14:20
+  // You can add more error checking here if needed
+  List<String> endTimeParts = endingTime.split(':');
+  int hourForEndingTime = int.parse(endTimeParts[0]);//14
+  int minuteForEndingTime = int.parse(endTimeParts[1]);//20
+
+
+  return LectureTime(
+      starting: DateTime(2022, 1, 1, hourForStartingTime, minuteForStartingTime),
+      ending: DateTime(2022, 1, 1, hourForEndingTime, minuteForEndingTime)
+  );
+
+
+}
+
+bool isTheSameDay(List<String> tl,List<String> tl2){
+  bool sameDay = false;
+  for (int i = tl.length - 1; i >= 0; i--) {
+    if(!tl[i].endsWith("day")) break;
+    if(tl2.contains(tl[i])){
+      sameDay=true;
+      break;
+    }
+  }
+  return sameDay;
 }
 
 List<CseCourse> getNeededCourses(
     List<CseCourse>? cseCourses, List<FirebaseCourse> notFinishedCourses) {
+
   if (cseCourses == null) return [];
+
   return cseCourses
       .where((cseCourse) => notFinishedCourses.any((notFininshed) =>
           notFininshed.code.trim() == cseCourse.courseId.trim()))
-      .toList();
+      .toList(); // join
 }
 
 void sortTheSections(List<CseCourse> neededSections, int currentSemester) {

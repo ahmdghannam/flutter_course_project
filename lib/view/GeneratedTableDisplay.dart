@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../model/Dto/UICourse.dart';
+import '../usecase/algorithm.dart';
 
 void main() {
   runApp(GeneratedTableDisplay());
@@ -25,10 +26,10 @@ class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
 
   Future<void> _loadCourses() async {
     try {
-      List<UICourse> fetchedCourses = testCourses();
+      List<UICourse> fetchedCourses = await getSuggestedCourses();
       print(fetchedCourses.toString());
       setState(() {
-        courses = fetchedCourses.sublist(0, 10);
+        courses = fetchedCourses;
       });
     } catch (error) {
       print("Error loading courses: $error");

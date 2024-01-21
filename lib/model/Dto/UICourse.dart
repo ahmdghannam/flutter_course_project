@@ -11,6 +11,6 @@ class UICourse{
 
   @override
   String toString() {
-    return 'Course{code: $code, name: $name, sectionNumber: $sectionNumber, activity: $activity, time: $time, hours: $hours}';
+    return 'Course{code: $code, name: $name, sectionNumber: $sectionNumber, activity: $activity, time: $time, hours: $hours}\n\n\n ---\n\n';
   }
 }
