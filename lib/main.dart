@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_course_project/view/HomePage.dart';
+import 'model/localDatabase/sharedPrefferences.dart';
 import 'view/login.dart';
 import 'model/firebase/firebase_options.dart';
 
@@ -20,5 +22,44 @@ void main() async {
         debugShowCheckedModeBanner: false,
       )
   );
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder<bool?>(
+      future: isLoggedIn(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.done) {
+          bool? isLoggedI = snapshot.data;
+          return showHomeIfLoggedIn(isLoggedI);
+        } else {
+          // While the Future is still in progress, you can show a loading indicator or another widget.
+          return const CircularProgressIndicator();
+        }
+      },
+    );
+  }
+
+  FutureBuilder<String?> showHomeIfLoggedIn(bool? isLoggedI) {
+    return FutureBuilder(
+        future: getUserID(),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done) {
+            String? userId = snapshot.data;
+            print("is logged in $isLoggedI");
+            print("the user id is $userId");
+            return MaterialApp(
+              theme: ThemeData(fontFamily: 'RobotoMono'),
+              home: isLoggedI == true && userId != null
+                  ? HomePage(studentId: userId)
+                  : LoginPage(),
+              debugShowCheckedModeBanner: false,
+            );
+          } else {
+            return const CircularProgressIndicator();
+          }
+        });
+  }
 }
 

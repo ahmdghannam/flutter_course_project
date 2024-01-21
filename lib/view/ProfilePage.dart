@@ -105,7 +105,7 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ],
             onTap: (index) {
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => pages[index]),
               );

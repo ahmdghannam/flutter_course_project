@@ -78,7 +78,6 @@ class SignUpPage extends StatelessWidget {
     String id = idController.text;
     String email = emailController.text;
     String password = passwordController.text;
-
     try {
       UserCredential userCredential =
       await FirebaseAuth.instance.createUserWithEmailAndPassword(

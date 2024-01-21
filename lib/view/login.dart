@@ -4,46 +4,10 @@ import 'HomePage.dart';
 import 'signup.dart'; // to import the RoundedTextField
 import '../model/localDatabase/sharedPrefferences.dart';
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return FutureBuilder<bool?>(
-      future: isLoggedIn(),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done) {
-          bool? isLoggedI = snapshot.data;
-          return showHomeIfLoggedIn(isLoggedI);
-        } else {
-          // While the Future is still in progress, you can show a loading indicator or another widget.
-          return const CircularProgressIndicator();
-        }
-      },
-    );
-  }
 
-  FutureBuilder<String?> showHomeIfLoggedIn(bool? isLoggedI) {
-    return FutureBuilder(
-        future: getUserID(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.done) {
-            String? userId = snapshot.data;
-            print("is logged in $isLoggedI");
-            print("the user id is $userId");
-            return MaterialApp(
-              theme: ThemeData(fontFamily: 'RobotoMono'),
-              home: isLoggedI == true
-                  ? HomePage(studentId: userId ?? "")
-                  : LoginPage(),
-              debugShowCheckedModeBanner: false,
-            );
-          } else {
-            return const CircularProgressIndicator();
-          }
-        });
-  }
-}
 
 class LoginPage extends StatelessWidget {
+
   final TextEditingController emailController = TextEditingController();
 
   final TextEditingController passwordController = TextEditingController();
@@ -152,7 +116,7 @@ class LoginPage extends StatelessWidget {
       // Handle login failure
       // You can show an error message to the user
       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-        content: Text("Login failed. Please check your credentials."),
+        content: Text("Login failed. Please check your email and password."),
         duration: Duration(seconds: 3),
       ));
     }

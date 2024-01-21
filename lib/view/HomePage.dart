@@ -6,14 +6,25 @@ import 'package:url_launcher/url_launcher.dart';
 
 import 'StartingPage.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   final String studentId;
   HomePage({required this.studentId});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
   late final List<Widget> pages;
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    pages=[HomePage(studentId: widget.studentId,), StartingPage(studentId: widget.studentId,), ProfilePage()];
+  }
+  @override
   Widget build(BuildContext context) {
-    pages=[HomePage(studentId: studentId,), StartingPage(studentId: studentId,), ProfilePage()];
     setAsLoggedIn();
     return Scaffold(
       appBar: AppBar(
@@ -56,7 +67,7 @@ class HomePage extends StatelessWidget {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => StartingPage(studentId: studentId,)),
+                  MaterialPageRoute(builder: (context) => StartingPage(studentId: widget.studentId,)),
                 );// Add functionality for updating passed courses
               },
               child: Text('Update Passed Courses', style: TextStyle(color: Colors.white)),
@@ -107,7 +118,7 @@ class HomePage extends StatelessWidget {
           ),
         ],
         onTap: (index){
-          Navigator.push(
+          Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => pages[index]),
           );
