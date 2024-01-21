@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_course_project/view/login.dart';
+import '../model/localDatabase/sharedPrefferences.dart';
 import 'HomePage.dart';
 import 'StartingPage.dart';
 
@@ -23,19 +25,26 @@ class _ProfilePageState extends State<ProfilePage> {
         home: Scaffold(
           backgroundColor: Colors.white,
           appBar: AppBar(
-            title: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Icon(
-                  Icons.logout,
-                  color: Colors.red,
-                ),
-                Container(width: 8),
-                const Text(
-                  "logout",
-                  style: TextStyle(fontSize: 16, color: Colors.red),
-                ),
-              ],
+            title: GestureDetector(
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Icon(
+                    Icons.logout,
+                    color: Colors.red,
+                  ),
+                  Container(width: 8),
+                  const Text(
+                    "logout",
+                    style: TextStyle(fontSize: 16, color: Colors.red),
+                  ),
+                ],
+              ),
+              onTap: (){
+                setAsLoggedOut();
+                Navigator.popUntil(context, (route) => false);
+                Navigator.push(context,MaterialPageRoute(builder: (context) => LoginPage()));
+              },
             ),
             backgroundColor: Colors.white,
           ),
