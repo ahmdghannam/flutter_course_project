@@ -1,24 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import '../model/Dto/UICourse.dart';
+import '../usecase/algorithm.dart';
+
 void main() {
   runApp(GeneratedTableDisplay());
-}
-class UICourse{
-  String code;
-  String name;
-  String sectionNumber;
-  String activity;
-  String time;
-  String hours;
-
-  UICourse(this.code, this.name, this.sectionNumber, this.activity, this.time,
-      this.hours);
-
-  @override
-  String toString() {
-    return 'Course{code: $code, name: $name, sectionNumber: $sectionNumber, activity: $activity, time: $time, hours: $hours}';
-  }
 }
 
 class GeneratedTableDisplay extends StatefulWidget {
@@ -39,10 +26,10 @@ class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
 
   Future<void> _loadCourses() async {
     try {
-      List<UICourse> fetchedCourses = testCourses();
+      List<UICourse> fetchedCourses = await getSuggestedCourses();
       print(fetchedCourses.toString());
       setState(() {
-        courses = fetchedCourses.sublist(0, 10);
+        courses = fetchedCourses;
       });
     } catch (error) {
       print("Error loading courses: $error");
@@ -97,11 +84,10 @@ class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
 
   DataColumn CustomColumnHeader(String text) {
     return DataColumn(
-        label: Expanded(
-            child: Text(
-              text,
-              overflow: TextOverflow.fade,
-            )));
+        label: Text(
+          text,
+          overflow: TextOverflow.fade,
+        ));
   }
 
   DataRow CustomDataRow(UICourse course) {
@@ -117,12 +103,10 @@ class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
 
   DataCell CustomDataCell(String text) {
     return DataCell(
-      Expanded(
-        child: Text(
-          text,
-          softWrap: true,
-          overflow: TextOverflow.fade,
-        ),
+      Text(
+        text,
+        softWrap: true,
+        overflow: TextOverflow.fade,
       ),
     );
   }

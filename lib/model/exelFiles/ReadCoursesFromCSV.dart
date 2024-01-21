@@ -1,65 +1,26 @@
 import 'package:csv/csv.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_course_project/model/Dto/AvailableSection.dart';
 
-class Course {
-  int courseId;
-  String courseName;
-  int defaultSemester;
-  int creditHours;
-  int preRequisitesCourses;
+import '../Dto/CseCourse.dart';
 
-  Course(this.courseId, this.courseName, this.defaultSemester, this.creditHours, this.preRequisitesCourses);
-}
-void main() => runApp(App());
-
-class App extends StatefulWidget {
-  const App({Key? key}) : super(key: key);
-
-  @override
-  State<App> createState() => _AppState();
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  print("hi");
+  List<CseCourse> ll = await loadAllCseCourses();
+  print(ll.toString());
 }
 
-class _AppState extends State<App> {
-  List<Course> courses = [];
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Courses'),
-        ),
-        body: Text('Get Courses'),),
-    );
-  }
-
-  Widget buildListView() {
-    if (courses.isEmpty) {
-      return Column(
-        children: [Text('No data found!!')],
-      );
-    }
-
-    return Column(
-      children: courses
-          .map(
-            (e) => ListTile(
-          title: Text(
-            "Course ID: ${e.courseId}, Name: ${e.courseName}, Semester: ${e.defaultSemester}, Credit Hours: ${e.creditHours}, Prerequisites: ${e.preRequisitesCourses}",
-          ),
-        ),
-      )
-          .toList(),
-    );
-  }
+Future<List<AvailableSection>> loadAvailableSections() async {
+  return _loadAvailableSections("assets/filtered_sections.csv");
 }
 
-Future<List<Course>> loadCSV() async {
-  String filePath = "assets/courses.csv"; // default
+Future<List<AvailableSection>> _loadAvailableSections(String path) async {
   List<List<dynamic>> _data = [];
-  List<Course> courses = [];
-  var result = await rootBundle.loadString(filePath);
+  List<AvailableSection> sections = [];
+
+  var result = await rootBundle.loadString(path);
   _data = const CsvToListConverter().convert(result, eol: "\n");
 
   // Remove header row
@@ -69,12 +30,44 @@ Future<List<Course>> loadCSV() async {
 
   for (var d in _data) {
     try {
-      courses.add(Course(
-        int.parse(d[0].toString()),        // courseId
-        d[1].toString(),                  // courseName
-        int.parse(d[2].toString()),        // defaultSemester
-        int.parse(d[3].toString()),        // creditHours
-        int.parse(d[4].toString()),        // preRequisitesCourses
+      sections.add(AvailableSection(
+          code: d[1].toString(),
+          name: d[2].toString(),
+          sectionNumber: d[8].toString(),
+          activity: d[7].toString(),
+          time: d[11].toString(),
+          hours: d[3].toString()));
+    } catch (e) {
+      print('Error parsing row: $d, Error: $e');
+    }
+  }
+  return sections;
+}
+
+Future<List<CseCourse>> loadAllCseCourses() async {
+  return _loadCseCourses("assets/courses.csv");
+}
+
+Future<List<CseCourse>> _loadCseCourses(String path) async {
+  List<List<dynamic>> _data = [];
+  List<CseCourse> courses = [];
+  var result = await rootBundle.loadString(path);
+  _data = const CsvToListConverter().convert(result, eol: "\n");
+
+  // Remove header row
+  if (_data.isNotEmpty) {
+    _data.removeAt(0);
+  }
+
+  for (var d in _data) {
+    try {
+      courses.add(CseCourse(
+        d[0].toString(), // courseId
+        d[1].toString(), // courseName
+        int.parse(d[2].toString()), // defaultSemester
+        int.parse(d[3].toString()), // creditHours
+        int.parse(d[4].toString()),
+        int.parse(d[5].toString())// preRequisitesCourses
       ));
     } catch (e) {
       print('Error parsing row: $d, Error: $e');
@@ -83,3 +76,5 @@ Future<List<Course>> loadCSV() async {
   // print(courses.map((e) => "Course ID: ${e.courseId}, Name: ${e.courseName}, Semester: ${e.defaultSemester}, Credit Hours: ${e.creditHours}, Prerequisites: ${e.preRequisitesCourses} \n").toList());
   return courses;
 }
+
+
