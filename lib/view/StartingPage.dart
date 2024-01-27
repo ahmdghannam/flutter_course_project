@@ -231,7 +231,11 @@ class StartingPageState extends State<StartingPage> {
                   ElevatedButton(
                     onPressed: () {
                       submitStatus(context); // Pass context to the function
-                    },
+                    }, style: ElevatedButton.styleFrom(
+                    fixedSize: const Size(320, 60),
+                    backgroundColor: const Color(0xFF842700),
+                    foregroundColor: Colors.white,
+                  ),
                     child: const Text('Submit'),
                   ),
                 ],

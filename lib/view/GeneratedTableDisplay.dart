@@ -10,9 +10,9 @@ void main() {
 
 class GeneratedTableDisplay extends StatefulWidget {
   String chosenSemester;
-  String chosenMaxHour;
+  String chosenHours;
 
-  GeneratedTableDisplay(this.chosenSemester, this.chosenMaxHour,{super.key});
+  GeneratedTableDisplay(this.chosenSemester, this.chosenHours,{super.key});
 
   @override
   State<GeneratedTableDisplay> createState() => _GeneratedTableDisplayState();
@@ -75,7 +75,8 @@ class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
         rows: courses
             .map((c) => CustomDataRow(c))
             .toList()
-            .sublist(0, calculateNumberOfCoursesLimit(widget.chosenMaxHour)));
+           .sublist(0, calculateNumberOfCoursesLimit(widget.chosenHours))
+    );
   }
 
   int calculateNumberOfCoursesLimit(String maxHours) {
