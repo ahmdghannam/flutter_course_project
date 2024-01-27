@@ -25,20 +25,20 @@ class _TableCreatorPageState extends State<TableCreatorPage> {
   String chosenMinHour = "15";
   String chosenMaxHour = "17";
 
-  List<String> startEndTimes = [
-    "8:30",
-    "9:00",
-    "10:00",
-    "11:00",
-    "12:30",
-    "1:00",
-    "2:00",
-    "3:00",
-    "4:00",
+  List<String> semesters = [
+    "1",
+    "2",
+    "3",
+    "4",
+    "5",
+    "6",
+    "7",
+    "8",
+    "9",
+    "10",
   ];
 
-  String chosenStartHour = "8:30";
-  String chosenEndHour = "3:00";
+  String chosenSemester = "1";
 
   @override
   Widget build(BuildContext context) {
@@ -111,8 +111,7 @@ class _TableCreatorPageState extends State<TableCreatorPage> {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                Text("start"),
-                Text("end"),
+                Text("Semester"),
               ],
               mainAxisAlignment: MainAxisAlignment.spaceAround,
             ),
@@ -120,18 +119,9 @@ class _TableCreatorPageState extends State<TableCreatorPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CustomDropDownButton(startEndTimes, chosenStartHour, (v) {
+              CustomDropDownButton(semesters, chosenSemester, (v) {
                 setState(() {
-                  chosenStartHour = v as String;
-                });
-              }),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("to"),
-              ),
-              CustomDropDownButton(startEndTimes, chosenEndHour, (v) {
-                setState(() {
-                  chosenEndHour = v as String;
+                  chosenSemester = v as String;
                 });
               }),
             ],

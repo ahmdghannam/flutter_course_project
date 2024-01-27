@@ -17,11 +17,7 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-final List<Widget> pages = [
-  HomePage(studentId: ""),
-  TableCreatorPage(),
-  ProfilePage()
-];
+final List<Widget> pages = [HomePage(studentId: "",), ProfilePage()];
 
 class _ProfilePageState extends State<ProfilePage> {
   late Future<DocumentSnapshot> userFuture;
@@ -189,16 +185,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 label: 'Home',
               ),
               BottomNavigationBarItem(
-                icon: Icon(Icons.app_registration),
-                label: 'Create New Table',
-              ),
-              BottomNavigationBarItem(
                 icon: Icon(Icons.account_circle),
                 label: 'Profile',
               ),
             ],
             onTap: (index) {
-              Navigator.push(
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(builder: (context) => pages[index]),
               );
