@@ -11,11 +11,11 @@ import '../model/Dto/LectureTime.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  List<UICourse> ss= await getSuggestedCourses();
+  List<UICourse> ss= await getSuggestedCourses("2");
   print(ss);
 }
 
-Future<List<UICourse>> getSuggestedCourses() async {
+Future<List<UICourse>> getSuggestedCourses(String chosenSemester) async {
 
   List<AvailableSection>? availableSections = await loadAvailableSections();
 
@@ -27,19 +27,21 @@ Future<List<UICourse>> getSuggestedCourses() async {
   }
   List<FirebaseCourse> notFinishedCourses = await getFalseStatusCourses(userId);
   return generateSuggestionList(
-      cseCourses, availableSections, notFinishedCourses
+      cseCourses, availableSections, notFinishedCourses,chosenSemester
   );
 }
 
 List<UICourse> generateSuggestionList(
     List<CseCourse>? cseCourses,
     List<AvailableSection>? availableSections,
-    List<FirebaseCourse> notFinishedCourses) {
+    List<FirebaseCourse> notFinishedCourses,
+    String chosenSemester
+    ) {
 
   List<CseCourse> neededCourses =
       getNeededCourses(cseCourses, notFinishedCourses); //join
 
-  sortTheSections(neededCourses, 2);
+  sortTheSections(neededCourses, int.parse(chosenSemester));
 
   List<UICourse> tableToBeDisplayed = [];
   for (var element in neededCourses) {

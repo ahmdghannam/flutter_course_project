@@ -17,7 +17,12 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-final List<Widget> pages = [HomePage(studentId: "",), ProfilePage()];
+final List<Widget> pages = [
+  HomePage(
+    studentId: "",
+  ),
+  ProfilePage()
+];
 
 class _ProfilePageState extends State<ProfilePage> {
   late Future<DocumentSnapshot> userFuture;
@@ -127,7 +132,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           String userEmail = userSnapshot['email'] ?? '';
                           String userID = userSnapshot['id'] ?? '';
                           // String userMajor = userSnapshot['major'] ?? '';
-                          String userMajor =  'CSE';
+                          String userMajor = 'CSE';
                           // int passedHours = userSnapshot['passedHours'] ?? 0;
                           int passedHours = 130;
                           // int remainingHours = userSnapshot['remainingHours'] ?? 0;

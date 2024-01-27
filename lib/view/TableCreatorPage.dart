@@ -22,7 +22,6 @@ class _TableCreatorPageState extends State<TableCreatorPage> {
     "18",
     "19",
   ];
-  String chosenMinHour = "15";
   String chosenMaxHour = "17";
 
   List<String> semesters = [
@@ -74,7 +73,6 @@ class _TableCreatorPageState extends State<TableCreatorPage> {
                 VerticalSpacing(60),
                 CustomButton(),
                 VerticalSpacing(16),
-                const Text("The hours should be between 12 -19 "),
                 VerticalSpacing(12),
                 const Text("The day time should be between 8:30 and 4:00"),
               ],
@@ -147,15 +145,6 @@ class _TableCreatorPageState extends State<TableCreatorPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CustomDropDownButton(hoursInterval, chosenMinHour, (v) {
-                setState(() {
-                  chosenMinHour = v as String;
-                });
-              }),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Text("to"),
-              ),
               CustomDropDownButton(hoursInterval, chosenMaxHour, (v) {
                 setState(() {
                   chosenMaxHour = v as String;
@@ -195,6 +184,6 @@ class _TableCreatorPageState extends State<TableCreatorPage> {
 
   void navigateToDisplayTable() {
     Navigator.push(context,
-        MaterialPageRoute(builder: (context) => const GeneratedTableDisplay()));
+        MaterialPageRoute(builder: (context) =>  GeneratedTableDisplay(chosenSemester,chosenMaxHour)));
   }
 }
