@@ -46,7 +46,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Scaffold(
-          backgroundColor: const Color(0xffEEEDED),
+          backgroundColor: Colors.white,
           appBar: AppBar(
             title: GestureDetector(
               child: Row(
@@ -70,115 +70,66 @@ class _ProfilePageState extends State<ProfilePage> {
                     MaterialPageRoute(builder: (context) => LoginPage()));
               },
             ),
-            backgroundColor: const Color(0xffEEEDED),
+            backgroundColor: Colors.white,
           ),
-          body: Stack(
+          body: Column(
             children: [
-              SingleChildScrollView(
-                padding: EdgeInsets.only(bottom: 32),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    VerticalSpacing(36),
-                    Center(
-                      child: Container(
-                        height: 300,
-                        width: 300,
-                        child: Image.asset("assets/profilePlaceHolder.png"),
-                      ),
-                    ),
-                    VerticalSpacing(7),
-                    const Center(
-                        child: Text(
-                      "Musab Nuirat",
-                      style: TextStyle(fontSize: 22),
-                    )),
-                  ],
-                ),
-              ),
-              Positioned(
-                bottom: 0,
-                left: 0,
-                right: 0,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(50),
-                    topRight: Radius.circular(50),
-                  ),
-                  child: Container(
-                    height: MediaQuery.of(context).size.height / 2.2,
-                    color: Colors.white,
-                  ),
-                ),
+              Container(
+                height: 150,
+                width: 150,
+                child: Image.asset("assets/profilePlaceHolder.png"),
               ),
               SizedBox(height: 30, width: MediaQuery.of(context).size.width),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.end,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  const SizedBox(height: 16),
-                  Padding(
-                    padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
-                    child: FutureBuilder<DocumentSnapshot>(
-                      future: userFuture,
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return Center(child: CircularProgressIndicator());
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else {
-                          var userSnapshot = snapshot.data!;
-                          String userEmail = userSnapshot['email'] ?? '';
-                          String userID = userSnapshot['id'] ?? '';
-                          // String userMajor = userSnapshot['major'] ?? '';
-                          String userMajor = 'CSE';
-                          // int passedHours = userSnapshot['passedHours'] ?? 0;
-                          int passedHours = 130;
-                          // int remainingHours = userSnapshot['remainingHours'] ?? 0;
-                          int remainingHours = 30;
-
-                          return Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      'Email\n\nID\n\nMajor\n\nPassed Hours\n\nRemaining Hours',
-                                      style: TextStyle(
-                                          color:
-                                              Color.fromARGB(255, 189, 114, 64),
-                                          fontSize: 20),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      '$userEmail\n\n$userID\n\n$userMajor\n\n${passedHours.toString()}\n\n${remainingHours.toString()}',
-                                      style: const TextStyle(fontSize: 20),
-                                      textAlign: TextAlign.center,
-                                    )
-                                  ],
-                                ),
-                              ),
-                            ],
-                          );
-                        }
-                      },
-                    ),
-                  ),
-                  SizedBox(
-                      height: 100, width: MediaQuery.of(context).size.width),
-                  // Add more widgets as needed
-                ],
+              const SizedBox(height: 16),
+              FutureBuilder<DocumentSnapshot>(
+                future: userFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState ==
+                      ConnectionState.waiting) {
+                    return Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Text('Error: ${snapshot.error}');
+                  } else {
+                    var userSnapshot = snapshot.data!;
+                    String userEmail = userSnapshot['email'] ?? '';
+                    String userName = userEmail.split("@")[0];
+                    String userID = userSnapshot['id'] ?? '';
+                    // String userMajor = userSnapshot['major'] ?? '';
+                    String userMajor = 'CSE';
+                    // int passedHours = userSnapshot['passedHours'] ?? 0;
+                    int passedHours = 130;
+                    // int remainingHours = userSnapshot['remainingHours'] ?? 0;
+                    int remainingHours = 30;
+                    return Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              'Name\n\nEmail\n\nID\n\nMajor\n\nPassed Hours\n\nRemaining Hours',
+                              style: TextStyle(
+                                  color:
+                                  Color.fromARGB(255, 189, 114, 64),
+                                  fontSize: 20),
+                            ),
+                          ],
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              '$userName\n\n$userEmail\n\n$userID\n\n$userMajor\n\n${passedHours.toString()}\n\n${remainingHours.toString()}',
+                              style: const TextStyle(fontSize: 20),
+                              textAlign: TextAlign.center,
+                            )
+                          ],
+                        ),
+                      ],
+                    );
+                  }
+                },
               ),
-              // Page content here
             ],
           ),
           bottomNavigationBar: BottomNavigationBar(
