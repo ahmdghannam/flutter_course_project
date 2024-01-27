@@ -91,8 +91,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     return Text('Error: ${snapshot.error}');
                   } else {
                     var userSnapshot = snapshot.data!;
+                    String userName =userSnapshot['name'];
                     String userEmail = userSnapshot['email'] ?? '';
-                    String userName = userEmail.split("@")[0];
                     String userID = userSnapshot['id'] ?? '';
                     // String userMajor = userSnapshot['major'] ?? '';
                     String userMajor = 'CSE';
