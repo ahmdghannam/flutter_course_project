@@ -19,7 +19,6 @@ class _HomePageState extends State<HomePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     pages=[HomePage(studentId: widget.studentId,), ProfilePage()];
   }
@@ -114,6 +113,7 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
         onTap: (index){
+          print("the index is : $index");
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (context) => pages[index]),

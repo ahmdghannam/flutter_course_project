@@ -79,7 +79,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       child: Container(
                         height: 300,
                         width: 300,
-                        child: Image.asset("assets/profile_icon.png"),
+                        child: Image.asset("assets/profilePlaceHolder.png"),
                       ),
                     ),
                     VerticalSpacing(7),
@@ -177,7 +177,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
           bottomNavigationBar: BottomNavigationBar(
-            currentIndex: 2,
+            currentIndex: 1,
             type: BottomNavigationBarType.fixed,
             items: [
               BottomNavigationBarItem(
