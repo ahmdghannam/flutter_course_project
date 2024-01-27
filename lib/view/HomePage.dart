@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    pages=[HomePage(studentId: widget.studentId,), StartingPage(studentId: widget.studentId,), ProfilePage()];
+    pages=[HomePage(studentId: widget.studentId,), ProfilePage()];
   }
   @override
   Widget build(BuildContext context) {
@@ -34,7 +34,7 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-        Image.asset('assets/omarlogo.png', height: 100,width: double.infinity,fit: BoxFit.fitHeight,),
+        Image.asset('assets/omarlogo.png', height: 200,width: double.infinity,fit: BoxFit.fitHeight,),
             // Container(height: 16),
             Container(
               padding: EdgeInsets.all(25.0),
@@ -107,10 +107,6 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
             label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.app_registration),
-            label: 'Create New Table',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),

@@ -15,7 +15,7 @@ class ProfilePage extends StatefulWidget {
   State<ProfilePage> createState() => _ProfilePageState();
 }
 
-final List<Widget> pages = [HomePage(studentId: "",), StartingPage(studentId: "",), ProfilePage()];
+final List<Widget> pages = [HomePage(studentId: "",), ProfilePage()];
 
 class _ProfilePageState extends State<ProfilePage> {
   @override
@@ -94,10 +94,6 @@ class _ProfilePageState extends State<ProfilePage> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
                 label: 'Home',
-              ),
-              BottomNavigationBarItem(
-                icon: Icon(Icons.app_registration),
-                label: 'Create New Table',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.account_circle),
