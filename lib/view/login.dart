@@ -4,13 +4,15 @@ import 'HomePage.dart';
 import 'signup.dart'; // to import the RoundedTextField
 import '../model/localDatabase/sharedPrefferences.dart';
 
+class LoginPage extends StatefulWidget {
+  @override
+  _LoginPageState createState() => _LoginPageState();
+}
 
-
-class LoginPage extends StatelessWidget {
-
+class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
-
   final TextEditingController passwordController = TextEditingController();
+  bool isLoading = false;
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +81,8 @@ class LoginPage extends StatelessWidget {
                     ),
                   ],
                 ),
+                SizedBox(height: 15,),
+                if (isLoading) CircularProgressIndicator(color: Color(0xFF7F2B13),),
               ],
             )
           ],
@@ -88,12 +92,16 @@ class LoginPage extends StatelessWidget {
   }
 
   void loginUser(BuildContext context) async {
+    setState(() {
+      isLoading = true;
+    });
+
     String email = emailController.text;
     String password = passwordController.text;
 
     try {
       UserCredential userCredential =
-          await FirebaseAuth.instance.signInWithEmailAndPassword(
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
         email: email,
         password: password,
       );
@@ -119,6 +127,10 @@ class LoginPage extends StatelessWidget {
         content: Text("Login failed. Please check your email and password."),
         duration: Duration(seconds: 3),
       ));
+    } finally {
+      setState(() {
+        isLoading = false;
+      });
     }
   }
 }

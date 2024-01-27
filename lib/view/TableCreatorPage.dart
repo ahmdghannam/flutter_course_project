@@ -76,7 +76,6 @@ class _TableCreatorPageState extends State<TableCreatorPage> {
                 VerticalSpacing(16),
                 const Text("The hours should be between 12 -19 "),
                 VerticalSpacing(12),
-                const Text("The day time should be between 8:30 and 4:00"),
               ],
             ),
           ),
