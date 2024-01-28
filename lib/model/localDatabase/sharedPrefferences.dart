@@ -2,7 +2,16 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 String loginKey = "isLoggedIn";
 String userIDKey = "userIDKey";
+String onBoarding="onBoarding";
 
+void setDontNeedOnBoarding() async {
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  sharedPreferences.setBool(onBoarding, false);
+}
+Future<bool?> checkIsNeedOnBoarding() async{
+  SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
+  return sharedPreferences.getBool(onBoarding);
+}
 dynamic getFromSharedPrefs(String key) async {
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   return sharedPreferences.get(key);
@@ -32,3 +41,4 @@ Future<String?> getUserID() async{
   SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
   return sharedPreferences.getString(userIDKey);
 }
+

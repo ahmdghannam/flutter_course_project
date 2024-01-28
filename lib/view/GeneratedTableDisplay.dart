@@ -75,13 +75,16 @@ class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
         rows: courses
             .map((c) => CustomDataRow(c))
             .toList()
-           .sublist(0, calculateNumberOfCoursesLimit(widget.chosenHours))
+           .sublist(0,
+            calculateNumberOfCoursesLimit(widget.chosenHours)
+        )
     );
   }
 
   int calculateNumberOfCoursesLimit(String maxHours) {
     int maxHoursValue = int.parse(maxHours);
-    int maxCourses = (maxHoursValue / 3).ceil();
+    int maxCourses = (maxHoursValue / 3).floor();
+
     return maxCourses;
   }
 
@@ -141,7 +144,7 @@ class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
             style: TextStyle(fontSize: 16),
           ),
           Text(
-            "total hours 13",
+            "total hours ${widget.chosenHours}",
             style: TextStyle(fontSize: 12, color: Color(0xFF842700)),
           ),
         ],
