@@ -5,11 +5,14 @@ import '../model/Dto/UICourse.dart';
 import '../usecase/algorithm.dart';
 
 void main() {
-  runApp(GeneratedTableDisplay());
+  runApp(GeneratedTableDisplay("2", "13"));
 }
 
 class GeneratedTableDisplay extends StatefulWidget {
-  const GeneratedTableDisplay({super.key});
+  String chosenSemester;
+  String chosenHours;
+
+  GeneratedTableDisplay(this.chosenSemester, this.chosenHours,{super.key});
 
   @override
   State<GeneratedTableDisplay> createState() => _GeneratedTableDisplayState();
@@ -26,7 +29,8 @@ class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
 
   Future<void> _loadCourses() async {
     try {
-      List<UICourse> fetchedCourses = await getSuggestedCourses();
+      List<UICourse> fetchedCourses =
+          await getSuggestedCourses(widget.chosenSemester);
       print(fetchedCourses.toString());
       setState(() {
         courses = fetchedCourses;
@@ -68,7 +72,20 @@ class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
     return DataTable(
         border: TableBorder.all(color: Colors.black54),
         columns: columnsHeaders(),
-        rows: courses.map((c) => CustomDataRow(c)).toList());
+        rows: courses
+            .map((c) => CustomDataRow(c))
+            .toList()
+           .sublist(0,
+            calculateNumberOfCoursesLimit(widget.chosenHours)
+        )
+    );
+  }
+
+  int calculateNumberOfCoursesLimit(String maxHours) {
+    int maxHoursValue = int.parse(maxHours);
+    int maxCourses = (maxHoursValue / 3).floor();
+
+    return maxCourses;
   }
 
   List<DataColumn> columnsHeaders() {
@@ -85,9 +102,9 @@ class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
   DataColumn CustomColumnHeader(String text) {
     return DataColumn(
         label: Text(
-          text,
-          overflow: TextOverflow.fade,
-        ));
+      text,
+      overflow: TextOverflow.fade,
+    ));
   }
 
   DataRow CustomDataRow(UICourse course) {
@@ -122,13 +139,12 @@ class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
               Navigator.pop(context);
             },
           ),
-
           const Text(
             "Suggested Schedule",
             style: TextStyle(fontSize: 16),
           ),
           Text(
-            "total hours 13",
+            "total hours ${widget.chosenHours}",
             style: TextStyle(fontSize: 12, color: Color(0xFF842700)),
           ),
         ],
@@ -160,8 +176,8 @@ List<UICourse> testCourses() {
         '2 hours'),
     UICourse('567801234', 'Art History 150', 'ARTH150-02', 'Lab', '2:00 PM',
         '2 hours'),
-    UICourse('345678901', 'Sociology 210', 'SOC210-01', 'Discussion', '10:30 AM',
-        '1.5 hours'),
+    UICourse('345678901', 'Sociology 210', 'SOC210-01', 'Discussion',
+        '10:30 AM', '1.5 hours'),
     UICourse('678901234', 'Political Science 220', 'POLSCI220-04', 'Lecture',
         '11:30 AM', '3 hours'),
     UICourse(
@@ -174,9 +190,9 @@ List<UICourse> testCourses() {
         '3 hours'),
     UICourse('456789012', 'Philosophy 210', 'PHIL210-04', 'Lab', '4:30 PM',
         '2 hours'),
-    UICourse('654321098', 'Statistics 301', 'STAT301-02', 'Discussion', '2:30 PM',
-        '1.5 hours'),
-    UICourse('234567890', 'Engineering 202', 'ENGR202-03', 'Seminar', '10:30 AM',
-        '2 hours'),
+    UICourse('654321098', 'Statistics 301', 'STAT301-02', 'Discussion',
+        '2:30 PM', '1.5 hours'),
+    UICourse('234567890', 'Engineering 202', 'ENGR202-03', 'Seminar',
+        '10:30 AM', '2 hours'),
   ];
 }
