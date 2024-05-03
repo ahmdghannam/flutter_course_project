@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_course_project/model/localDatabase/sharedPrefferences.dart';
+import 'package:flutter_course_project/view/ChatPage.dart';
 import 'package:flutter_course_project/view/ProfilePage.dart';
 import 'package:flutter_course_project/view/TableCreatorPage.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -20,8 +21,15 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    pages=[HomePage(studentId: widget.studentId,), ProfilePage()];
+    pages = [
+      HomePage(
+        studentId: widget.studentId,
+      ),
+      // ChatPage(),
+      ProfilePage()
+    ];
   }
+
   @override
   Widget build(BuildContext context) {
     setAsLoggedIn();
@@ -33,7 +41,12 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-        Image.asset('assets/omarlogo.png', height: 200,width: double.infinity,fit: BoxFit.fitHeight,),
+            Image.asset(
+              'assets/omarlogo.png',
+              height: 200,
+              width: double.infinity,
+              fit: BoxFit.fitHeight,
+            ),
             // Container(height: 16),
             Container(
               padding: EdgeInsets.all(25.0),
@@ -47,10 +60,14 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const TableCreatorPage()),
+                  MaterialPageRoute(
+                      builder: (context) => const TableCreatorPage()),
                 );
               },
-              child: Text('Create New Table', style: TextStyle(color: Colors.white),),
+              child: Text(
+                'Create New Table',
+                style: TextStyle(color: Colors.white),
+              ),
               style: ElevatedButton.styleFrom(
                 fixedSize: Size(250, 70),
                 backgroundColor: Color(0xff842700),
@@ -66,10 +83,14 @@ class _HomePageState extends State<HomePage> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => StartingPage(studentId: widget.studentId,)),
-                );// Add functionality for updating passed courses
+                  MaterialPageRoute(
+                      builder: (context) => StartingPage(
+                            studentId: widget.studentId,
+                          )),
+                ); // Add functionality for updating passed courses
               },
-              child: Text('Update Passed Courses', style: TextStyle(color: Colors.white)),
+              child: Text('Update Passed Courses',
+                  style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
                 fixedSize: Size(250, 70),
                 backgroundColor: Color(0xff842700),
@@ -83,9 +104,11 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 8),
             ElevatedButton(
               onPressed: () {
-                _launchURLInBrowser('https://www.aaup.edu/Academics/Undergraduate-Studies/Faculty-Engineering/Computer-Systems-Engineering-Department/Computer-Systems-Engineering/Curriculum');
+                _launchURLInBrowser(
+                    'https://www.aaup.edu/Academics/Undergraduate-Studies/Faculty-Engineering/Computer-Systems-Engineering-Department/Computer-Systems-Engineering/Curriculum');
               },
-              child: Text('Go to CSE Plan', style: TextStyle(color: Colors.white)),
+              child:
+                  Text('Go to CSE Plan', style: TextStyle(color: Colors.white)),
               style: ElevatedButton.styleFrom(
                 fixedSize: Size(250, 70),
                 backgroundColor: Color(0xff842700),
@@ -107,12 +130,16 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.home),
             label: 'Home',
           ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.support_agent),
+          //   label: 'ChatBot',
+          // ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),
             label: 'Profile',
           ),
         ],
-        onTap: (index){
+        onTap: (index) {
           print("the index is : $index");
           Navigator.pushReplacement(
             context,
