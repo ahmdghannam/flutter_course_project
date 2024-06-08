@@ -128,6 +128,60 @@ Future<List<UICourse>> getSuggestedCourses(String chosenSemester) async {
   return tableToBeDisplayed;
 }
 
+void removeCourseByCourseId(List<UICourse> tableToBeDisplayed, String courseId) {
+  // Iterate through the list of UICourses
+  for (int i = 0; i < tableToBeDisplayed.length; i++) {
+    // Check if the courseId of the current UICourse matches the provided courseId
+    if (tableToBeDisplayed[i].code == courseId) {
+      // Remove the UICourse from the list
+      tableToBeDisplayed.removeAt(i);
+      break;
+    }
+  }
+}
+
+void removeSectionBySectionId(List<Section> sections, String sectionId) {
+  // Iterate through the list of sections
+  for (int i = 0; i < sections.length; i++) {
+    // Check if the sectionId of the current section matches the provided sectionId
+    if (sections[i].sectionId == int.parse(sectionId)) {
+      // Remove the Section from the list
+      sections.removeAt(i);
+      break;
+    }
+  }
+}
+
+
+CseCourse? returnCourseByCourseId(List<CseCourse> courses, String courseId) {
+  // Iterate through the list of courses
+  for (int i = 0; i < courses.length; i++) {
+    if (courses[i].courseId == courseId) {
+      return courses[i];
+    }
+  }
+  return null;
+}
+
+String TryToAddSection(List<UICourse> tableToBeDisplayed,CseCourse course,List<Section> sections ) {
+  String result = "";
+  for (Section section in sections) {
+    result = hasConflictWithSection(tableToBeDisplayed, section);
+    if (result == "") {
+      // added = true;
+      tableToBeDisplayed.add(UICourse(
+          section.courseId.toString(),
+          course.courseName,
+          section.sectionId.toString(),
+          section.status.toString(),
+          // should be changed to activity (the change in the section class)
+          section.time.toString(),
+          course.creditHours.toString()));
+      break;
+    }
+  }
+  return result;
+}
 bool generateSchedule(
     List<CseCourse> neededCourses,
     List<Section> sections,
@@ -136,55 +190,180 @@ bool generateSchedule(
     int desiredCreditHours,
     TimeOfDay startTime,
     TimeOfDay endTime ) {
-
-  // Base case: successfully scheduled all desired credit hours or reached the end of the course list
-  if (currentIndex == neededCourses.length || desiredCreditHours <= 0) {
-    return true; // Successfully scheduled all desired credit hours
-  }
-
-  // for (var course in neededCourses) {
-  //   addIfCanAdd(tableToBeDisplayed, sections, course);
-  // }
-  // Get the current course
-  CseCourse currentCourse = neededCourses[currentIndex]; // most important one, now
-  print("currentCourse $currentCourse");
-  print("startTime $startTime , endTime $endTime");
-  print("first- getOpenSections ${getOpenSections(sections, currentCourse, startTime, endTime)[0]}");
-  // Iterate through open sections of the current course within the specified time range
-  for (Section section in getOpenSections(sections, currentCourse, startTime, endTime)) {
-    // Check if the section conflicts with the existing schedule
-    if (!hasConflict(tableToBeDisplayed, section)) {
-      print("not has conflict between table and section");// Add the section to the schedule
-      tableToBeDisplayed.add(
-          UICourse(
-              section.courseId.toString(),
-              currentCourse.courseName,
-              section.sectionId.toString(),
-              section.status.toString(), // should be changed to activity (the change in the section class)
-              section.time.toString(),
-              currentCourse.creditHours.toString())
-      );
-
-      print("going to the next course 167");// Recursively attempt to schedule the remaining courses
-      if (generateSchedule(
-          neededCourses, sections, tableToBeDisplayed, currentIndex + 1, desiredCreditHours - currentCourse.creditHours, startTime, endTime)) {
-        return true; // Move to the next course
+  bool stop = false;
+  List<CseCourse> addedCourses = [];
+  for(CseCourse course in neededCourses){
+    List<Section> CourseSections = getOpenSections(sections, course, startTime, endTime);
+    if(CourseSections.length==0){ // for now only, to pass the elective courses
+      continue;
+    }
+    String result = TryToAddSection(tableToBeDisplayed,course, CourseSections);
+    if(result == ""){ // added
+      addedCourses.add(course);
+      desiredCreditHours -= course.creditHours;
+      if (desiredCreditHours <= 0) {
+        stop = true;
+        break;
       }
+    }
+    else { // not added
+      String removedCourseId = result.split('-')[0];
+      String removedSectionId = result.split('-')[1];
+      removeCourseByCourseId(tableToBeDisplayed, removedCourseId);
+      CseCourse? removedCourse = returnCourseByCourseId(addedCourses, removedCourseId);
+      String newResult = "";
+      if(removedCourse!=null){
+        List<Section> sectionList = getOpenSections(sections, removedCourse, startTime, endTime);
+        removeSectionBySectionId(sectionList, removedSectionId);
+        newResult=TryToAddSection(tableToBeDisplayed, removedCourse, sectionList);
+        if(newResult==""){ // added - there is another section that is not conflicting, now try to add the current course
+          String result = TryToAddSection(tableToBeDisplayed,course, CourseSections);
+          if(result == ""){ // added -
+            addedCourses.add(course);
+            desiredCreditHours -= course.creditHours;
+            if (desiredCreditHours <= 0) {
+              stop = true;
+              break;
+            }
+          }
+        // else{
+        // //   continue to the next course
+        // }
+        }
+        else{
+          // re-add the removedCourse and then continue to the next course
+          List<Section> CourseSections = getOpenSections(sections, removedCourse, startTime, endTime);
+          String result = TryToAddSection(tableToBeDisplayed,removedCourse, CourseSections);
+          if(result == ""){ // added
+            addedCourses.add(removedCourse);
+          }
+        //   continue to the next course
+        }
+      }
+    }
 
-      print("remove the last added section 173"); // Backtrack by removing the last added section if scheduling failed
-      tableToBeDisplayed.removeLast();
+    if(stop){
+      return true;
     }
   }
-  // Could not find a suitable section for the current course
+  
   return false;
+  
+  // // Base case: successfully scheduled all desired credit hours or reached the end of the course list
+  // if (currentIndex == neededCourses.length || desiredCreditHours <= 0) {
+  //   return true; // Successfully scheduled all desired credit hours
+  // }
+  //
+  // else {
+  //   CseCourse currentCourse = neededCourses[currentIndex]; // the most important course for now
+  //   print("currentCourse ${currentCourse}, getOpenSections ${getOpenSections(sections, currentCourse, startTime, endTime)[0]}");
+  //
+  //   // Iterate through open sections of the current course within the specified time range
+  //   for (Section section in getOpenSections(sections, currentCourse, startTime, endTime)) {
+  //     int addFlag = 0;
+  //     // Check if the section conflicts with the existing schedule
+  //     if (!hasConflict(tableToBeDisplayed, section)) {
+  //       print("not has conflict between table and section");// Add the section to the schedule
+  //       tableToBeDisplayed.add(UICourse(
+  //           section.courseId.toString(),
+  //           currentCourse.courseName,
+  //           section.sectionId.toString(),
+  //           section.status.toString(), // should be changed to activity (the change in the section class)
+  //           section.time.toString(),
+  //           currentCourse.creditHours.toString()));
+  //       addFlag = 1;
+  //     }
+  //
+  //     if (addFlag==1) {
+  //       print("//////////////////////// going to the next course 164, currentIndex: ${currentIndex} neededCourses.length ${neededCourses.length}");// Recursively attempt to schedule the remaining courses
+  //       return generateSchedule(neededCourses, sections, tableToBeDisplayed, currentIndex + 1, desiredCreditHours - currentCourse.creditHours, startTime, endTime); // Move to the next course
+  //     } else {
+  //     // print("remove the last added section 173"); // Backtrack by removing the last added section if scheduling failed
+  //     // tableToBeDisplayed.removeLast();
+  //     print("has conflict between table and section");
+  //     continue;
+  //     }
+  //   }
+  //   return generateSchedule(neededCourses, sections, tableToBeDisplayed, currentIndex + 1, desiredCreditHours, startTime, endTime); // Move to the next course
+  //   // Could not find a suitable section for the current course
+  //   return false;
+  // }
+
+
+}
+
+// bool generateSchedule(
+//     List<CseCourse> neededCourses,
+//     List<Section> sections,
+//     List<UICourse> tableToBeDisplayed,
+//     int currentIndex,
+//     int desiredCreditHours,
+//     TimeOfDay startTime,
+//     TimeOfDay endTime ) {
+//
+//   // Base case: successfully scheduled all desired credit hours or reached the end of the course list
+//   if (currentIndex == neededCourses.length || desiredCreditHours <= 0) {
+//     return true; // Successfully scheduled all desired credit hours
+//   }
+//
+//   // for (var course in neededCourses) {
+//   //   addIfCanAdd(tableToBeDisplayed, sections, course);
+//   // }
+//   // Get the current course
+//   CseCourse currentCourse = neededCourses[currentIndex]; // most important one, now
+//   print("currentCourse $currentCourse");
+//   print("startTime $startTime , endTime $endTime");
+//   print("first- getOpenSections ${getOpenSections(sections, currentCourse, startTime, endTime)[0]}");
+//   // Iterate through open sections of the current course within the specified time range
+//   for (Section section in getOpenSections(sections, currentCourse, startTime, endTime)) {
+//     // Check if the section conflicts with the existing schedule
+//     if (!hasConflict(tableToBeDisplayed, section)) {
+//       print("not has conflict between table and section");// Add the section to the schedule
+//       tableToBeDisplayed.add(
+//           UICourse(
+//               section.courseId.toString(),
+//               currentCourse.courseName,
+//               section.sectionId.toString(),
+//               section.status.toString(), // should be changed to activity (the change in the section class)
+//               section.time.toString(),
+//               currentCourse.creditHours.toString())
+//       );
+//
+//       print("going to the next course 167");// Recursively attempt to schedule the remaining courses
+//   if (generateSchedule(neededCourses, sections, tableToBeDisplayed, currentIndex + 1, desiredCreditHours - currentCourse.creditHours, startTime, endTime)) {
+//         return true; // Move to the next course
+//       }
+//
+//       // print("remove the last added section 173"); // Backtrack by removing the last added section if scheduling failed
+//       tableToBeDisplayed.removeLast();
+//     }
+//   }
+//   // Could not find a suitable section for the current course
+//   return false;
+// }
+
+String hasConflictWithSection(List<UICourse> tableToBeDisplayed, Section newSection) {
+  if (tableToBeDisplayed == []){
+    return "";
+  }
+
+  for (UICourse section in tableToBeDisplayed) {
+    if (doSectionsConflict(Section(
+        int.parse(section.sectionNumber),
+        int.parse(section.code),
+        false,
+        section.time
+    ), newSection)) {
+      return '${section.code}-${section.sectionNumber}';
+    }
+  }
+  return "";
 }
 
 bool hasConflict(List<UICourse> tableToBeDisplayed, Section newSection) {
   if (tableToBeDisplayed == []){
     print("tableToBeDisplayed == [] 183");
     return false;}
-  print("fn- has conflict 185");
-
   print("tableToBeDisplayed $tableToBeDisplayed");
 
   for (UICourse section in tableToBeDisplayed) {
@@ -256,7 +435,6 @@ bool isThereAConflict(String time, String time2) {
 // Function to check if two sections have conflicting days and time overlap
 // may have problems, due to day/time
 bool doSectionsConflict(Section section1, Section section2) {
-  print("doSectionsConflict 255: ${section1.toString()} && ${section2.toString()}");
   // Take the days from the section 1 time
   List<String> section1List = section1.time.substring(1, section1.time.length - 1).split(' ');
   List<String> section1Days = [];
