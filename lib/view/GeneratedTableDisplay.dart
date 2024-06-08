@@ -75,9 +75,6 @@ class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
         rows: courses
             .map((c) => CustomDataRow(c))
             .toList()
-           .sublist(0,
-            calculateNumberOfCoursesLimit(widget.chosenHours)
-        )
     );
   }
 
