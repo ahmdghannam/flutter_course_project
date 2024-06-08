@@ -32,13 +32,48 @@ extension TimeOfDayExtension on TimeOfDay {
     return '$hourLabel:$minuteLabel';
   }
 }
+//
+// Future<void> main() async {
+//   WidgetsFlutterBinding.ensureInitialized();
+//   List<UICourse> ss = await getSuggestedCourses("15","2");
+//   print(ss);
+// }
 
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  List<UICourse> ss = await getSuggestedCourses("2");
-  print(ss);
+Future<List<UICourse>> getSuggestedCourses(String hours,String chosenSemester) async {
+  // The University Schedule sections,
+  List<Section>? sections = await loadAvailableSections();
+
+  // The Major Courses with it's details
+  List<CseCourse>? cseCourses = await loadAllCseCourses();
+
+  // Get the needed courses ( the allowed courses to be registered (not finished yet) )
+  String? userId = await getUserID();
+  if (userId == null) {
+    return throw "user id not found";
+  }
+  List<FirebaseCourse> notFinishedCourses = await getFalseStatusCourses(userId);
+  List<CseCourse> neededCourses =
+  getNeededCourses(cseCourses, notFinishedCourses); //join
+  neededCourses = sortCourses(neededCourses);
+  print("neededCourses $neededCourses");
+  // Default parameters to be taken from the user later
+  int desiredCreditHours = int.parse(hours);
+  TimeOfDay startTime = const TimeOfDay(hour: 10, minute: 0);
+  TimeOfDay endTime = const TimeOfDay(hour: 16, minute: 0);
+
+  // The Table to be Displayed for the user
+  List<UICourse> tableToBeDisplayed = [];
+
+  // Attempt to generate a schedule using the provided inputs
+  if (generateSchedule(neededCourses, sections, tableToBeDisplayed, 0, desiredCreditHours, startTime, endTime)) {
+    // Print the successfully generated schedule
+    print("Schedule generated successfully:");
+  } else {
+    // Print a message indicating failure to generate a suitable schedule
+    print("Failed to generate schedule.");
+  }
+  return tableToBeDisplayed;
 }
-
 Future<List<FirebaseCourse>> getFalseStatusCourses(String studentId) async {
   List<FirebaseCourse> falseStatusCourses = [];
 
@@ -86,46 +121,11 @@ List<CseCourse> sortCourses(List<CseCourse> courses) {
 
   return courses;
 }
+
 int calculateCourseWeight(CseCourse course) {
   // Function to calculate the weight for each course based on default semester and prerequisites
   // Adjust the formula based on your specific weighting criteria
   return course.defaultSemester + course.childrenCount;
-}
-
-Future<List<UICourse>> getSuggestedCourses(String chosenSemester) async {
-  // The University Schedule sections,
-  List<Section>? sections = await loadAvailableSections();
-
-  // The Major Courses with it's details
-  List<CseCourse>? cseCourses = await loadAllCseCourses();
-
-  // Get the needed courses ( the allowed courses to be registered (not finished yet) )
-  String? userId = await getUserID();
-  if (userId == null) {
-    return throw "user id not found";
-  }
-  List<FirebaseCourse> notFinishedCourses = await getFalseStatusCourses(userId);
-  List<CseCourse> neededCourses =
-  getNeededCourses(cseCourses, notFinishedCourses); //join
-  neededCourses = sortCourses(neededCourses);
-  print("neededCourses $neededCourses");
-  // Default parameters to be taken from the user later
-  int desiredCreditHours = 15;
-  TimeOfDay startTime = const TimeOfDay(hour: 10, minute: 0);
-  TimeOfDay endTime = const TimeOfDay(hour: 16, minute: 0);
-
-  // The Table to be Displayed for the user
-  List<UICourse> tableToBeDisplayed = [];
-
-  // Attempt to generate a schedule using the provided inputs
-  if (generateSchedule(neededCourses, sections, tableToBeDisplayed, 0, desiredCreditHours, startTime, endTime)) {
-    // Print the successfully generated schedule
-    print("Schedule generated successfully:");
-  } else {
-    // Print a message indicating failure to generate a suitable schedule
-    print("Failed to generate schedule.");
-  }
-  return tableToBeDisplayed;
 }
 
 void removeCourseByCourseId(List<UICourse> tableToBeDisplayed, String courseId) {

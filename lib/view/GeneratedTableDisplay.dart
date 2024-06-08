@@ -30,7 +30,7 @@ class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
   Future<void> _loadCourses() async {
     try {
       List<UICourse> fetchedCourses =
-          await getSuggestedCourses(widget.chosenSemester);
+          await getSuggestedCourses(widget.chosenHours,widget.chosenSemester);
       print(fetchedCourses.toString());
       setState(() {
         courses = fetchedCourses;
@@ -75,9 +75,6 @@ class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
         rows: courses
             .map((c) => CustomDataRow(c))
             .toList()
-           .sublist(0,
-            calculateNumberOfCoursesLimit(widget.chosenHours)
-        )
     );
   }
 
