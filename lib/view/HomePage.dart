@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
       HomePage(
         studentId: widget.studentId,
       ),
-      // ChatPage(),
+       ChatPage(),
       ProfilePage()
     ];
   }
@@ -130,10 +130,10 @@ class _HomePageState extends State<HomePage> {
             icon: Icon(Icons.home),
             label: 'Home',
           ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.support_agent),
-          //   label: 'ChatBot',
-          // ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.support_agent),
+            label: 'ChatBot',
+          ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),
             label: 'Profile',
