@@ -51,7 +51,10 @@ class _HomePageState extends State<HomePage> {
             Container(
               padding: EdgeInsets.all(25.0),
               child: Text(
-                'Welcome to TableCraft, where we effortlessly transform your student data into organized tables! Simplify your workload and enhance efficiency with just a few clicks.',
+                'Welcome to Mosaed, where we effortlessly transform your student data into organized tables! Simplify your workload and enhance efficiency with just a few clicks.'
+                    '\n\nand Chat with our Ai powered chatbot to get more information about your courses and your schedule.',
+
+
                 textAlign: TextAlign.center,
               ),
             ),
