@@ -5,6 +5,8 @@ import 'package:flutter_chat_types/flutter_chat_types.dart';
 import 'package:flutter_course_project/model/Chat/ChatData.dart';
 import 'package:intl/intl.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'HomePage.dart';
+import 'ProfilePage.dart';
 import 'widgets/ChatAppBar.dart';
 
 class ChatPage extends StatefulWidget {
@@ -19,7 +21,13 @@ class _ChatPageState extends State<ChatPage> {
 
   User user =
       User(id: '1', firstName: 'John', lastName: 'Doe', role: Role.user);
-
+  final List<Widget> pages = [
+    HomePage(
+      studentId: "",
+    ),
+    ChatPage(),
+    ProfilePage()
+  ];
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: ChatAppBar(
@@ -198,6 +206,30 @@ class _ChatPageState extends State<ChatPage> {
             ),
           ),
         ),
+      bottomNavigationBar: BottomNavigationBar(
+      currentIndex: 1,
+      type: BottomNavigationBarType.fixed,
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.support_agent),
+          label: 'ChatBot',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.account_circle),
+          label: 'Profile',
+        ),
+      ],
+      onTap: (index) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => pages[index]),
+        );
+      },
+    ),
       );
 
   Future<void> _showErrorDialog(BuildContext context, String error) async {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_course_project/view/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/localDatabase/sharedPrefferences.dart';
+import 'ChatPage.dart';
 import 'HomePage.dart';
 import 'TableCreatorPage.dart';
 
@@ -21,6 +22,7 @@ final List<Widget> pages = [
   HomePage(
     studentId: "",
   ),
+  ChatPage(),
   ProfilePage()
 ];
 
@@ -173,12 +175,16 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
           bottomNavigationBar: BottomNavigationBar(
-            currentIndex: 1,
+            currentIndex: 2,
             type: BottomNavigationBarType.fixed,
             items: [
               BottomNavigationBarItem(
                 icon: Icon(Icons.home),
                 label: 'Home',
+              ),
+              BottomNavigationBarItem(
+                icon: Icon(Icons.support_agent),
+                label: 'ChatBot',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.account_circle),
