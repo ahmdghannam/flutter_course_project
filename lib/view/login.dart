@@ -28,7 +28,7 @@ class LoginPage extends StatelessWidget {
             Column(
               children: [
                 const Image(
-                  image: AssetImage("assets/omarlogo.png"),
+                  image: AssetImage("assets/logoWithText.png"),
                   height: 300,
                 ),
                 RoundedTextField(
