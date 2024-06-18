@@ -14,6 +14,7 @@ class TableCreatorPage extends StatefulWidget {
 
 class _TableCreatorPageState extends State<TableCreatorPage> {
   List<String> hoursInterval = [
+    "12",
     "13",
     "14",
     "15",
@@ -24,20 +25,18 @@ class _TableCreatorPageState extends State<TableCreatorPage> {
   ];
   String chosenMaxHour = "17";
 
-  List<String> semesters = [
-    "1",
-    "2",
-    "3",
-    "4",
-    "5",
-    "6",
-    "7",
-    "8",
-    "9",
-    "10",
+  List<String> times = [
+    "8:30",
+    "10:00",
+    "11:00",
+    "12:00",
+    "13:00",
+    "14:00",
+    "15:00",
+    "16:30"
   ];
 
-  String chosenSemester = "1";
+  String chosenStartTime = "8:30", chosenEndTime = "16:30";
 
   @override
   Widget build(BuildContext context) {
@@ -74,7 +73,10 @@ class _TableCreatorPageState extends State<TableCreatorPage> {
                 CustomButton(),
                 VerticalSpacing(16),
                 VerticalSpacing(12),
-                const Text("The day time should be between 8:30 and 4:00"),
+                Center(
+                  child: const Text(
+                      "The times should be between 8:30 and 4:30 for the face-to-face lectures"),
+                )
               ],
             ),
           ),
@@ -109,7 +111,7 @@ class _TableCreatorPageState extends State<TableCreatorPage> {
             padding: const EdgeInsets.all(8.0),
             child: Row(
               children: [
-                Text("Semester"),
+                Text("Starting Time : Ending Time"),
               ],
               mainAxisAlignment: MainAxisAlignment.spaceAround,
             ),
@@ -117,9 +119,15 @@ class _TableCreatorPageState extends State<TableCreatorPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              CustomDropDownButton(semesters, chosenSemester, (v) {
+              CustomDropDownButton(times.sublist(0, 3), chosenStartTime, (v) {
                 setState(() {
-                  chosenSemester = v as String;
+                  chosenStartTime = v as String;
+                });
+              }),
+              const Text(" "),
+              CustomDropDownButton(times.sublist(3), chosenEndTime, (v) {
+                setState(() {
+                  chosenEndTime = v as String;
                 });
               }),
             ],
@@ -183,7 +191,10 @@ class _TableCreatorPageState extends State<TableCreatorPage> {
   }
 
   void navigateToDisplayTable() {
-    Navigator.push(context,
-        MaterialPageRoute(builder: (context) =>  GeneratedTableDisplay(chosenSemester,chosenMaxHour)));
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+            builder: (context) => GeneratedTableDisplay(
+                chosenStartTime, chosenEndTime, chosenMaxHour)));
   }
 }

@@ -1,7 +1,7 @@
 import 'package:csv/csv.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_course_project/model/Dto/AvailableSection.dart';
+import 'package:flutter_course_project/model/Dto/Section.dart';
 
 import '../Dto/CseCourse.dart';
 
@@ -12,13 +12,13 @@ void main() async {
   print(ll.toString());
 }
 
-Future<List<AvailableSection>> loadAvailableSections() async {
+Future<List<Section>> loadAvailableSections() async {
   return _loadAvailableSections("assets/filtered_sections.csv");
 }
 
-Future<List<AvailableSection>> _loadAvailableSections(String path) async {
+Future<List<Section>> _loadAvailableSections(String path) async {
   List<List<dynamic>> _data = [];
-  List<AvailableSection> sections = [];
+  List<Section> sections = [];
 
   var result = await rootBundle.loadString(path);
   _data = const CsvToListConverter().convert(result, eol: "\n");
@@ -27,16 +27,32 @@ Future<List<AvailableSection>> _loadAvailableSections(String path) async {
   if (_data.isNotEmpty) {
     _data.removeAt(0);
   }
+/*
+Before:
+    code => courseId
+    name => courseName // not important
+    sectionNumber => sectionId
+    activity => Lecutre
+    timeList // list of time and days
+    creditHours // course credit hours
+=======
+After:
+  int sectionId;
+  int courseId;
+  bool status;
+  String time;
+ */
+  print("_data[0]");
+  print(_data[0]);
 
   for (var d in _data) {
     try {
-      sections.add(AvailableSection(
-          code: d[1].toString(),
-          name: d[2].toString(),
-          sectionNumber: d[8].toString(),
-          activity: d[7].toString(),
-          time: d[11].toString(),
-          hours: d[3].toString()));
+      sections.add(Section(
+          int.parse(d[8].toString()), // sectionId:
+          int.parse(d[1].toString()), //courseId:
+          false, //status:
+          d[11].toString(), // time and days time:
+      ));
     } catch (e) {
       print('Error parsing row: $d, Error: $e');
     }
@@ -52,7 +68,7 @@ Future<List<CseCourse>> _loadCseCourses(String path) async {
   List<List<dynamic>> _data = [];
   List<CseCourse> courses = [];
   var result = await rootBundle.loadString(path);
-  _data = const CsvToListConverter().convert(result, eol: "\n");
+  _data = const CsvToListConverter().convert(result);
 
   // Remove header row
   if (_data.isNotEmpty) {
@@ -69,6 +85,7 @@ Future<List<CseCourse>> _loadCseCourses(String path) async {
         int.parse(d[4].toString()),
         int.parse(d[5].toString())// preRequisitesCourses
       ));
+      print(d[6].toString().split(','));
     } catch (e) {
       print('Error parsing row: $d, Error: $e');
     }
@@ -76,5 +93,3 @@ Future<List<CseCourse>> _loadCseCourses(String path) async {
   // print(courses.map((e) => "Course ID: ${e.courseId}, Name: ${e.courseName}, Semester: ${e.defaultSemester}, Credit Hours: ${e.creditHours}, Prerequisites: ${e.preRequisitesCourses} \n").toList());
   return courses;
 }
-
-
