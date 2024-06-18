@@ -54,12 +54,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   const Text(
                     "Logout",
-                    style: TextStyle(fontSize: 16, color: Colors.black),
+                    style: TextStyle(fontSize: 16, color: Colors.white),
                   ),
                   Container(width: 8),
                   Icon(
                     Icons.logout,
-                    color: Colors.black,
+                    color: Colors.white,
                   ),
                 ],
               ),
@@ -70,65 +70,105 @@ class _ProfilePageState extends State<ProfilePage> {
                     MaterialPageRoute(builder: (context) => LoginPage()));
               },
             ),
-            backgroundColor: Colors.white,
+            backgroundColor: Color(0xff842700),
           ),
-          body: Column(
+          body: Stack(
+            alignment: Alignment.center,
             children: [
-              Container(
-                height: 150,
-                width: 150,
-                child: Image.asset("assets/profilePlaceHolder.png"),
-              ),
-              SizedBox(height: 30, width: MediaQuery.of(context).size.width),
-              const SizedBox(height: 16),
-              FutureBuilder<DocumentSnapshot>(
-                future: userFuture,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState ==
-                      ConnectionState.waiting) {
-                    return Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
-                  } else {
-                    var userSnapshot = snapshot.data!;
-                    String userName =userSnapshot['name'];
-                    String userEmail = userSnapshot['email'] ?? '';
-                    String userID = userSnapshot['id'] ?? '';
-                    // String userMajor = userSnapshot['major'] ?? '';
-                    String userMajor = 'CSE';
-                    // int passedHours = userSnapshot['passedHours'] ?? 0;
-                    int passedHours = 130;
-                    // int remainingHours = userSnapshot['remainingHours'] ?? 0;
-                    int remainingHours = 30;
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+              Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    height: 450,
+                    width: double.infinity,
+                    margin: EdgeInsets.symmetric(horizontal: 10),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'Name\n\nEmail\n\nID\n\nMajor\n\nPassed Hours\n\nRemaining Hours',
-                              style: TextStyle(
-                                  color:
-                                  Color.fromARGB(255, 189, 114, 64),
-                                  fontSize: 20),
-                            ),
-                          ],
-                        ),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '$userName\n\n$userEmail\n\n$userID\n\n$userMajor\n\n${passedHours.toString()}\n\n${remainingHours.toString()}',
-                              style: const TextStyle(fontSize: 20),
-                              textAlign: TextAlign.center,
-                            )
-                          ],
+                        FutureBuilder<DocumentSnapshot>(
+                          future: userFuture,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                ConnectionState.waiting) {
+                              return Center(child: CircularProgressIndicator());
+                            } else if (snapshot.hasError) {
+                              return Text('Error: ${snapshot.error}');
+                            } else {
+                              var userSnapshot = snapshot.data!;
+                              String userName = userSnapshot['name'];
+                              String userEmail = userSnapshot['email'] ?? '';
+                              String userID = userSnapshot['id'] ?? '';
+                              // String userMajor = userSnapshot['major'] ?? '';
+                              String userMajor = 'CSE';
+                              // int passedHours = userSnapshot['passedHours'] ?? 0;
+                              int passedHours = 130;
+                              // int remainingHours = userSnapshot['remainingHours'] ?? 0;
+                              int remainingHours = 30;
+                              return Padding(
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8),
+                                child: Column(
+                                  children: [
+                                    buildTextField(
+                                        "Name", userName, Icons.person),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    buildTextField(
+                                        "ID", userID, Icons.numbers_sharp),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    buildTextField(
+                                        "Major", userMajor, Icons.work),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    buildTextField("Passed Hours",
+                                        passedHours.toString(), Icons.done),
+                                    SizedBox(
+                                      height: 15,
+                                    ),
+                                    buildTextField(
+                                        "Remaining Hours",
+                                        remainingHours.toString(),
+                                        Icons.timelapse_outlined),
+                                  ],
+                                ),
+                              );
+                            }
+                          },
                         ),
                       ],
-                    );
-                  }
-                },
+                    ),
+                  )
+                ],
+              ),
+              CustomPaint(
+                child: Container(
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                ),
+                painter: HeaderCurvedContainer(),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    padding: EdgeInsets.all(10),
+                    width: MediaQuery.of(context).size.width / 2.5,
+                    height: MediaQuery.of(context).size.width / 2.5,
+                    decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white, width: 5),
+                      shape: BoxShape.circle,
+                      color: Colors.white,
+                      image: DecorationImage(
+                        image: AssetImage('assets/profilePlaceHolder.jpg'),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ],
           ),
@@ -154,10 +194,50 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ));
   }
+
+  Widget buildTextField(String label, String text, IconData icon) {
+    return TextField(
+      decoration: InputDecoration(
+        labelText: label,
+        hintText: "  " + text,
+        hintStyle: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(28),
+          borderSide: const BorderSide(
+            color: Color(0xff842700),
+          ),
+          gapPadding: 5,
+        ),
+        floatingLabelBehavior: FloatingLabelBehavior.always,
+        suffixIcon: Icon(icon),
+      ),
+    );
+  }
 }
 
 Container VerticalSpacing(double value) {
   return Container(
     height: value,
   );
+}
+
+class HeaderCurvedContainer extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    Paint paint = Paint()..color = Color(0xff842700);
+    Path path = Path()
+      ..relativeLineTo(0, 75)
+      ..quadraticBezierTo(size.width / 2, 130, size.width, 75)
+      ..relativeLineTo(0, -75)
+      ..close();
+    canvas.drawPath(path, paint);
+  }
+
+  @override
+  bool shouldRepaint(covariant CustomPainter oldDelegate) {
+    return false;
+  }
 }
