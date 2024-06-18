@@ -26,7 +26,7 @@ class ChatData {
   static List<Message> dummyChat = [];
 
   @override
-  bool operator ==(covariant ChatData other) {
+  bool operator == (covariant ChatData other) {
     if (identical(this, other)) return true;
 
     return listEquals(other.messages, messages) &&
