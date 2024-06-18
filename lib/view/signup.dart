@@ -26,7 +26,7 @@ class SignUpPage extends StatelessWidget {
             Column(
               children: [
                 const Image(
-                  image: AssetImage("assets/omarlogo.png"),
+                  image: AssetImage("assets/logoWithText.png"),
                   height: 250,
                 ),
                 RoundedTextField(

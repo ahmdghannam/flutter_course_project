@@ -42,7 +42,7 @@ class _HomePageState extends State<HomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Image.asset(
-              'assets/omarlogo.png',
+              'assets/logo.png',
               height: 200,
               width: double.infinity,
               fit: BoxFit.fitHeight,
