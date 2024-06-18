@@ -50,9 +50,8 @@ class _ChatPageState extends State<ChatPage> {
                   text: partialText.text,
                 );
                 setState(() {
-                  ChatData.dummyChat.insert(0, message);
                   ChatData.dummyChat.insert(
-                      1,
+                     0,
                       TextMessage(
                         author: User(
                           id: '2',
@@ -65,6 +64,7 @@ class _ChatPageState extends State<ChatPage> {
                             .toString(),
                         text: 'Hello! How can I assist you today?',
                       ));
+                  ChatData.dummyChat.insert(1, message);
                 });
               },
               emptyState: Column(
