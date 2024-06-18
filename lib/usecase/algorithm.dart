@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_course_project/model/Dto/CseCourse.dart';
 import 'package:flutter_course_project/model/Dto/UICourse.dart';
 import 'package:flutter_course_project/model/exelFiles/ReadCoursesFromCSV.dart';
@@ -31,11 +30,6 @@ extension TimeOfDayExtension on TimeOfDay {
 
     return '$hourLabel:$minuteLabel';
   }
-}
-
-Future<void> main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  List<UICourse> MyList = await getSuggestedCourses("2");
 }
 
 Future<List<FirebaseCourse>> getFalseStatusCourses(String studentId) async {
@@ -91,7 +85,7 @@ int calculateCourseWeight(CseCourse course) {
   return course.defaultSemester + course.childrenCount;
 }
 
-Future<List<UICourse>> getSuggestedCourses(String chosenHours) async {
+Future<List<UICourse>> getSuggestedCourses(String start, String end, String chosenHours) async {
   // The University Schedule sections,
   List<Section>? sections = await loadAvailableSections();
 
@@ -108,11 +102,13 @@ Future<List<UICourse>> getSuggestedCourses(String chosenHours) async {
   neededCourses = sortCourses(neededCourses);
   // print("neededCourses $neededCourses");
   // Default parameters to be taken from the user later
-  chosenHours = "15";
+  // chosenHours = "15";
   int desiredCreditHours = int.parse(chosenHours);
   print("&& desiredCreditHours" + chosenHours);
-  TimeOfDay startTime = const TimeOfDay(hour: 10, minute: 0);
-  TimeOfDay endTime = const TimeOfDay(hour: 16, minute: 0);
+
+  String parts = start + "-" + end;
+  List<TimeOfDay> myTimes = parseLectureTimeString(parts);
+  TimeOfDay startTime= myTimes[0], endTime = myTimes[1];
 
   // The Table to be Displayed for the user
   List<UICourse> tableToBeDisplayed = [];
@@ -308,8 +304,8 @@ List<Section> getOpenSections(List<Section> sections, CseCourse course, TimeOfDa
               // && doSectionsConflict(section, Section(0,0,false,'[${startTime.toStringConvert()}-${endTime.toStringConvert()}]')) // UnComment when we change the data
 
               // The below is not valid
-              // && section.startTime.compareTo(startTime)==-1 &&
-              // section.endTime.compareTo(endTime)==1
+              && (section.startTime?.compareTo(startTime)==1 || section.startTime?.compareTo(startTime)==0 )
+              && (section.endTime?.compareTo(endTime)==-1    || section.endTime?.compareTo(endTime)==0 )
             ).toList();
 }
 

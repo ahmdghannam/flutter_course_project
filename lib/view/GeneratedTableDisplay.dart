@@ -4,15 +4,10 @@ import 'package:flutter/services.dart';
 import '../model/Dto/UICourse.dart';
 import '../usecase/algorithm.dart';
 
-void main() {
-  runApp(GeneratedTableDisplay("2", "13"));
-}
-
 class GeneratedTableDisplay extends StatefulWidget {
-  String chosenSemester;
-  String chosenHours;
+  String startTime, endTime, chosenHours;
 
-  GeneratedTableDisplay(this.chosenSemester, this.chosenHours,{super.key});
+  GeneratedTableDisplay(this.startTime, this.endTime, this.chosenHours,{super.key});
 
   @override
   State<GeneratedTableDisplay> createState() => _GeneratedTableDisplayState();
@@ -30,7 +25,7 @@ class _GeneratedTableDisplayState extends State<GeneratedTableDisplay> {
   Future<void> _loadCourses() async {
     try {
       List<UICourse> fetchedCourses =
-          await getSuggestedCourses(widget.chosenHours);
+          await getSuggestedCourses(widget.startTime, widget.endTime, widget.chosenHours);
       print(fetchedCourses.toString());
       setState(() {
         courses = fetchedCourses;
